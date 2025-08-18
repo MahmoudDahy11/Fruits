@@ -34,6 +34,7 @@ dependencies:
   firebase_core: ^4.0.0
   flutter:
     sdk: flutter
+  flutter_awesome_icon: ^0.0.1
   flutter_bloc: ^9.1.1
   flutter_intl: ^0.0.1
   flutter_localizations:
