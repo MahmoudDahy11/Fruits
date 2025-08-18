@@ -60,7 +60,6 @@ class HomeViewProduct extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SvgPicture.asset(Assets.imagesFruits),
                     ],
                   ),
                 ],
