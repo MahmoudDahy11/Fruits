@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "377576775395",
+    "project_id": "fruits-app-bf710",
+    "storage_bucket": "fruits-app-bf710.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377576775395:android:b943ab82028cf06a036fd6",
+        "android_client_info": {
+          "package_name": "com.example.e_commerce_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjnA-8KGKyCTII4XIuzCHASBdIBk72yCk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

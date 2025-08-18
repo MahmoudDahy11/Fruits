@@ -1,0 +1,10 @@
+{
+  "appName": "E-Commerce App",
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "welcome": "Welcome",
+  "cart": "Cart",
+  "checkout": "Checkout",
+  "addToCart": "Add to cart"
+}
