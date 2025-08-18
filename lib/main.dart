@@ -38,7 +38,6 @@ class ECommerceApp extends StatelessWidget {
           RegiserView.id: (context) => RegiserView(),
           ResetPasswordView.id: (context) => ResetPasswordView(),
           HomeViewProduct.id: (context) => HomeViewProduct(),
-
         },
         localizationsDelegates: [
           S.delegate,
