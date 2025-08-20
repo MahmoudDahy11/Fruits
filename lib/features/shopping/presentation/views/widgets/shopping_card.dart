@@ -28,9 +28,7 @@ class ShoppingCard extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: Center(child: SvgPicture.asset(Assets.imagesStrobary)),
-          ),
+          Expanded(child: Center(child: Image.asset(Assets.imagesStroparypng))),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
