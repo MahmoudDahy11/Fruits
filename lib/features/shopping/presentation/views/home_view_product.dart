@@ -1,4 +1,6 @@
+import 'package:e_commerce_app/core/constant/assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import 'widgets/card_item.dart';
@@ -139,26 +141,27 @@ class _HomeViewProductState extends State<HomeViewProduct> {
             : _otherPages[_currentIndex - 1],
       ),
       bottomNavigationBar: SalomonBottomBar(
+        backgroundColor: Color(0xffFFFFFF),
         currentIndex: _currentIndex,
         onTap: (i) => setState(() => _currentIndex = i),
         items: [
           SalomonBottomBarItem(
-            icon: const Icon(Icons.home),
+            icon: SvgPicture.asset(Assets.imagesHome, height: 30),
             title: const Text("الرئيسية"),
             selectedColor: Color(0xff1B5E37),
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.grid_view_rounded),
+            icon: SvgPicture.asset(Assets.imagesElement3, height: 30),
             title: const Text("المنتجات"),
             selectedColor: Color(0xff1B5E37),
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.shopping_cart),
+            icon: SvgPicture.asset(Assets.imagesShoppingCart, height: 30),
             title: const Text("السلة"),
             selectedColor: Color(0xff1B5E37),
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.person),
+            icon: SvgPicture.asset(Assets.imagesUser, height: 30),
             title: const Text("حسابي"),
             selectedColor: Color(0xff1B5E37),
           ),
