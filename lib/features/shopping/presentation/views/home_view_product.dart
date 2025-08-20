@@ -1,45 +1,61 @@
 import 'package:e_commerce_app/core/constant/assets.dart';
-import 'package:e_commerce_app/core/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'widgets/card_item.dart';
 import 'widgets/custom_list_tile_info.dart';
-import 'widgets/custom_shop_botton.dart';
 import 'widgets/custom_text_field_product.dart';
+import 'widgets/shopping_card.dart';
 
 class HomeViewProduct extends StatelessWidget {
   const HomeViewProduct({super.key});
   static String id = 'Home_product_view';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Column(
-            children: [
-              const CustomListTileInfo(),
-              const SizedBox(height: 30),
-              const CustomTextFieldProduct(),
-              const SizedBox(height: 30),
-              SizedBox(
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: CustomListTileInfo(),
+              ),
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 30)),
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: CustomTextFieldProduct(),
+              ),
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 30)),
+            SliverToBoxAdapter(
+              child: SizedBox(
                 height: MediaQuery.sizeOf(context).height * .22,
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
                       child: CardItem(),
                     );
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24.0),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 24.0,
+                  horizontal: 8.0,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const [
                     Text(
                       'الأكثر مبيعا',
                       style: TextStyle(
@@ -60,68 +76,25 @@ class HomeViewProduct extends StatelessWidget {
                   ],
                 ),
               ),
-              
-            ],
-          ),
+            ),
+            SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: ShoppingCard(),
+                ),
+                childCount: 4,
+              ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: 0.8,
+              ),
+            ),
+          ],
         ),
       ),
-    );
-  }
-}
-
-class DiscountCardItemDetails extends StatelessWidget {
-  const DiscountCardItemDetails({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'عروض العيد',
-          style: TextStyle(
-            fontFamily: 'Cairo',
-            fontSize: 18,
-            color: Color(0XFFD3E4D1),
-          ),
-        ),
-        // const SizedBox(height: 30),
-        Text(
-          'خصم 25%',
-          style: TextStyle(
-            fontFamily: 'Cairo',
-            fontSize: 30,
-            color: Color(backGroundColor),
-          ),
-        ),
-        const SizedBox(height: 15),
-        CustomShopBotton(),
-      ],
-    );
-  }
-}
-
-class CardItem extends StatelessWidget {
-  const CardItem({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SvgPicture.asset(
-          Assets.imagesCircles,
-          height: MediaQuery.sizeOf(context).height * .22,
-        ),
-        SvgPicture.asset(
-          Assets.imagesFeatureItemBackground,
-          height: MediaQuery.sizeOf(context).height * .22,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 16.0, top: 32),
-          child: DiscountCardItemDetails(),
-        ),
-      ],
     );
   }
 }
