@@ -62,8 +62,8 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - Assets/Images/
-  #   - images/a_dot_ham.jpeg
+    - assets/images/
+    # - Assets/Images/strobary.svg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
   # For details regarding adding assets from package dependencies, see
@@ -76,7 +76,7 @@ flutter:
   fonts:
     - family: Cairo
       fonts:
-        - asset: Assets/fonts/Cairo-Regular.ttf
+        - asset: assets/fonts/Cairo-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
@@ -91,7 +91,7 @@ flutter_intl:
   enabled: true
 
 flutter_assets:
-  assets_path: Assets/Images/
+  assets_path: assets/images/
   output_path: lib/core/constant/
   filename: assets.dart
   field_prefix: null

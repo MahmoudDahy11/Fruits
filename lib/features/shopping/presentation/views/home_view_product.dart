@@ -1,6 +1,4 @@
-import 'package:e_commerce_app/core/constant/assets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'widgets/card_item.dart';
 import 'widgets/custom_list_tile_info.dart';
 import 'widgets/custom_text_field_product.dart';
@@ -83,7 +81,7 @@ class HomeViewProduct extends StatelessWidget {
                   padding: EdgeInsets.all(8.0),
                   child: ShoppingCard(),
                 ),
-                childCount: 4,
+                childCount: 20,
               ),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -30,9 +29,7 @@ class ShoppingCard extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Center(
-              child: SvgPicture.asset(Assets.imagesStrobary, height: 100),
-            ),
+            child: Center(child: SvgPicture.asset(Assets.imagesStrobary)),
           ),
           const SizedBox(height: 8),
           Row(

@@ -1,5 +1,4 @@
 import 'package:e_commerce_app/core/constant/constant.dart';
-import 'package:e_commerce_app/features/auth/presentation/views/register/view/regiser_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/auth/presentation/views/login/widgets/custom_check_text.dart';
@@ -37,12 +36,7 @@ class CustomCreateAccountText extends StatelessWidget {
           child: FittedBox(
             fit: BoxFit.scaleDown,
             alignment: Alignment.centerLeft,
-            child: CustomCheckText(
-              text: text2,
-              onTap: () {
-                Navigator.pushNamed(context, RegiserView.id);
-              },
-            ),
+            child: CustomCheckText(text: text2, onTap: onTap),
           ),
         ),
       ],
