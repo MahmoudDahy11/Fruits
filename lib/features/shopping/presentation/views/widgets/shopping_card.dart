@@ -3,8 +3,15 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../../core/constant/assets.dart';
 
-class ShoppingCard extends StatelessWidget {
+class ShoppingCard extends StatefulWidget {
   const ShoppingCard({super.key});
+
+  @override
+  State<ShoppingCard> createState() => _ShoppingCardState();
+}
+
+class _ShoppingCardState extends State<ShoppingCard> {
+  bool check = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +27,14 @@ class ShoppingCard extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.favorite_outline_rounded,
-                color: Colors.black,
+              onPressed: () {
+                setState(() {
+                  check = !check;
+                });
+              },
+              icon: Icon(
+                check ? Icons.favorite : Icons.favorite_outline_rounded,
+                color: check ? Colors.red : Colors.black,
                 size: 30,
               ),
             ),
