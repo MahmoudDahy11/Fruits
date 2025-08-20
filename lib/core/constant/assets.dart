@@ -5,7 +5,8 @@ class Assets {
   /// Assets for imagesAppIcon
   /// Assets/Images/App_Icon.svg
   static const String imagesAppIcon = "Assets/Images/App_Icon.svg";
-  static const String imagesFruits = "Assets/Images/fruits.svg";
+  static const String imagesCardFruits = "Assets/Images/cardFruits.svg";
+  static const String imagestest = "Assets/Images/test.svg";
 
   /// Assets for imagesAppleIcons
   /// Assets/Images/AppleIcons.svg

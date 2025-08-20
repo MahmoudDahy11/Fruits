@@ -39,7 +39,7 @@ class ECommerceApp extends StatelessWidget {
           ResetPasswordView.id: (context) => ResetPasswordView(),
           HomeViewProduct.id: (context) => HomeViewProduct(),
         },
-        localizationsDelegates: [
+        localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -52,3 +52,7 @@ class ECommerceApp extends StatelessWidget {
     );
   }
 }
+
+
+// Pass@gmail.com
+//PassPass
