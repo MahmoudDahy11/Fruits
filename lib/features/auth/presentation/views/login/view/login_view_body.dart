@@ -36,7 +36,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
           isLoading = false;
           showSnakBar(context, 'Login Success');
           Future.delayed(Duration(seconds: 1), () {
-            Navigator.of(context).pushNamed(HomeViewProduct.id);
+            Navigator.of(context).pushReplacementNamed(HomeViewProduct.id);
           });
         } else if (state is AuthFailure) {
           isLoading = false;

@@ -23,7 +23,6 @@ class _PageViewWelcomeState extends State<PageViewWelcome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: const Color(0xffFFFFFF),
       body: Column(
         children: [
           Expanded(

@@ -41,95 +41,98 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            actions: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(Icons.arrow_forward_ios),
-              ),
-            ],
-            automaticallyImplyLeading: false,
-            centerTitle: true,
-            title: const Text(
-              'حساب جديد',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                fontFamily: fontFamily,
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+            appBar: AppBar(
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(Icons.arrow_forward_ios),
+                ),
+              ],
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              title: const Text(
+                'حساب جديد',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: fontFamily,
+                ),
               ),
             ),
-          ),
-          body: ModalProgressHUD(
-            inAsyncCall: isLoading,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 40),
-                    CustomTextField(
-                      hintText: 'الاسم بالكامل',
-                      onSaved: (value) {
-                        fullName = value;
-                      },
-                      obscureText: false,
-                    ),
-                    const SizedBox(height: 20),
-                    CustomTextField(
-                      hintText: 'البريد الالكتروني',
-                      onSaved: (value) {
-                        email = value;
-                      },
-                      obscureText: false,
-                    ),
-                    const SizedBox(height: 20),
-                    CustomTextField(
-                      hintText: 'كلمة المرور',
-                      onSaved: (value) {
-                        password = value;
-                      },
-                      suffix: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            obscureText = !obscureText;
-                          });
+            body: ModalProgressHUD(
+              inAsyncCall: isLoading,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 40),
+                      CustomTextField(
+                        hintText: 'الاسم بالكامل',
+                        onSaved: (value) {
+                          fullName = value;
                         },
-                        icon: Icon(
-                          obscureText
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          color: Colors.grey,
-                        ),
+                        obscureText: false,
                       ),
-                      obscureText: obscureText,
-                    ),
-                    const SizedBox(height: 80),
-                    CustomBotton(
-                      text: 'انشاء حساب جديد',
-                      onTap: () async {
-                        if (formKey.currentState!.validate()) {
-                          formKey.currentState!.save();
-                          BlocProvider.of<AuthCubit>(context).register(
-                            email: email!,
-                            password: password!,
-                            fullName: fullName!,
-                          );
-                        }
-                      },
-                    ),
-                    const SizedBox(height: 40),
-                    CustomCreateAccountText(
-                      text1: 'تمتلك حساب بالفعل ؟',
-                      text2: 'تسجيل الدخول',
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      CustomTextField(
+                        hintText: 'البريد الالكتروني',
+                        onSaved: (value) {
+                          email = value;
+                        },
+                        obscureText: false,
+                      ),
+                      const SizedBox(height: 20),
+                      CustomTextField(
+                        hintText: 'كلمة المرور',
+                        onSaved: (value) {
+                          password = value;
+                        },
+                        suffix: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              obscureText = !obscureText;
+                            });
+                          },
+                          icon: Icon(
+                            obscureText
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        obscureText: obscureText,
+                      ),
+                      const SizedBox(height: 80),
+                      CustomBotton(
+                        text: 'انشاء حساب جديد',
+                        onTap: () async {
+                          if (formKey.currentState!.validate()) {
+                            formKey.currentState!.save();
+                            BlocProvider.of<AuthCubit>(context).register(
+                              email: email!,
+                              password: password!,
+                              fullName: fullName!,
+                            );
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 40),
+                      CustomCreateAccountText(
+                        text1: 'تمتلك حساب بالفعل ؟',
+                        text2: 'تسجيل الدخول',
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
