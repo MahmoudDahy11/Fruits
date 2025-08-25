@@ -1,29 +1,33 @@
+import 'package:e_commerce_app/core/errors/custom_excption.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthentication {
-  Future<UserCredential> registerUser({
+  Future<User> createUserWithEmailAndPassword({
     required String email,
     required String password,
-    required String fullName,
   }) async {
     try {
       final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      return credential;
+      return credential.user!;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        throw ('The password provided is too weak.');
+        throw (CustomExcption(
+          errMessage: 'The password provided is too weak.',
+        ));
       } else if (e.code == 'email-already-in-use') {
-        throw ('The account already exists for that email.');
+        throw (CustomExcption(
+          errMessage: 'The account already exists for that email.',
+        ));
       } else {
-        throw (e.message ?? 'FirebaseAuth error');
+        throw (CustomExcption(errMessage: 'FirebaseAuth error'));
       }
     } catch (e) {
-      throw (e.toString());
+      throw (CustomExcption(errMessage: 'Oops there was an erroe !!'));
     }
   }
 
-  Future<UserCredential> loginUser({
+  Future<User> signInWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -32,17 +36,19 @@ class FirebaseAuthentication {
         email: email,
         password: password,
       );
-      return credential;
+      return credential.user!;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        throw ('No user found for that email.');
+        throw (CustomExcption(errMessage: 'No user found for that email.'));
       } else if (e.code == 'wrong-password') {
-        throw ('Wrong password provided for that user.');
+        throw (CustomExcption(
+          errMessage: 'Wrong password provided for that user.',
+        ));
       } else {
-        throw (e.message ?? 'FirebaseAuth error');
+        throw (CustomExcption(errMessage: 'FirebaseAuth error'));
       }
     } catch (e) {
-      throw (e.toString());
+      throw (CustomExcption(errMessage: 'Oops there was an erroe !!'));
     }
   }
 }
