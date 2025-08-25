@@ -1,14 +1,13 @@
 import 'package:bloc/bloc.dart';
-import 'package:e_commerce_app/core/services/firebase_auth.dart';
+import 'package:e_commerce_app/features/auth/domain/repo/auth_repo.dart';
 import 'package:meta/meta.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
+  AuthCubit(this.authRepo) : super(AuthInitial());
 
-  final FirebaseAuthentication _firebaseAuthentication =
-      FirebaseAuthentication();
+  final AuthRepo authRepo;
 
   Future<void> register({
     required String email,
@@ -17,10 +16,10 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(AuthLoading());
-      await _firebaseAuthentication.registerUser(
+      await authRepo.createUserWithEmailAndPassword(
         email: email,
         password: password,
-        fullName: fullName
+        name: fullName,
       );
       emit(AuthSuccess());
     } catch (e) {
@@ -28,10 +27,18 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> login({required String email, required String password}) async {
+  Future<void> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+    required String fullName,
+  }) async {
     try {
       emit(AuthLoading());
-      await _firebaseAuthentication.loginUser(email: email, password: password);
+      await authRepo.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+        fullName: fullName,
+      );
       emit(AuthSuccess());
     } catch (e) {
       emit(AuthFailure(errMessage: e.toString()));
