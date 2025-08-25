@@ -47,13 +47,16 @@ class _ShoppingCardState extends State<ShoppingCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'فراولة',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'Cairo',
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: const Text(
+                      'فراولة',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Cairo',
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -81,7 +84,7 @@ class _ShoppingCardState extends State<ShoppingCard> {
                   ),
                 ],
               ),
-              SvgPicture.asset(Assets.imagesCount2, height: 40),
+              SvgPicture.asset(Assets.imagesCount2, height: 30),
             ],
           ),
         ],
