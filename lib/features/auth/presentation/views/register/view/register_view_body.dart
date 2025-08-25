@@ -31,7 +31,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
           isLoading = true;
         } else if (state is AuthSuccess) {
           isLoading = false;
-          showSnakBar(context, 'Login Success');
+          showSnakBar(context, 'Register Success');
           Future.delayed(Duration(seconds: 1), () {
             Navigator.of(context).pushNamed(HomeViewProduct.id);
           });
@@ -129,6 +129,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                         text2: 'تسجيل الدخول',
                         onTap: () {
                           Navigator.of(context).pop();
+                          
                         },
                       ),
                     ],
