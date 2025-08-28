@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'features/auth/presentation/views/login/view/login_view.dart';
 import 'features/auth/presentation/views/reset_password_view.dart';
-import 'features/shopping/presentation/views/home_view_product.dart';
+import 'features/shopping/presentation/views/home.dart';
+import 'features/shopping/presentation/views/product_details_view.dart';
 import 'features/splash/presentation/views/splash.dart';
 
 Future<void> main() async {
@@ -33,7 +34,8 @@ class Fruits extends StatelessWidget {
         LoginView.id: (context) => LoginView(),
         RegiserView.id: (context) => RegiserView(),
         ResetPasswordView.id: (context) => ResetPasswordView(),
-        HomeViewProduct.id: (context) => HomeViewProduct(),
+        HomeView.id: (context) => HomeView(),
+        ProductDetiallsView.id: (context) => ProductDetiallsView(),
       },
       localizationsDelegates: const [
         S.delegate,
