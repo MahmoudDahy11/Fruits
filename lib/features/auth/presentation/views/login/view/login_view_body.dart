@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../../../../core/widgets/show_snak_bar.dart';
-import '../../../../../shopping/presentation/views/home_view_product.dart';
+import '../../../../../shopping/presentation/views/home.dart';
 import '../../reset_password_view.dart';
 
 class LoginViewBody extends StatefulWidget {
@@ -39,7 +39,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
             isLoading = false;
             showSnakBar(context, 'Login Success');
             Future.delayed(Duration(seconds: 1), () {
-              Navigator.of(context).pushNamed(HomeViewProduct.id);
+              Navigator.of(context).pushNamed(HomeView.id);
             });
           } else if (state is AuthFailure) {
             isLoading = false;
