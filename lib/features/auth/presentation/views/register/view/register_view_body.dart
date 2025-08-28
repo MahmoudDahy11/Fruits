@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../../../../../shopping/presentation/views/home_view_product.dart';
+import '../../../../../shopping/presentation/views/home.dart';
 
 class RegisterViewBody extends StatefulWidget {
   const RegisterViewBody({super.key});
@@ -33,7 +33,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
           isLoading = false;
           showSnakBar(context, 'Register Success');
           Future.delayed(Duration(seconds: 1), () {
-            Navigator.of(context).pushNamed(HomeViewProduct.id);
+            Navigator.of(context).pushNamed(HomeView.id);
           });
         } else if (state is AuthFailure) {
           isLoading = false;
@@ -129,7 +129,6 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                         text2: 'تسجيل الدخول',
                         onTap: () {
                           Navigator.of(context).pop();
-                          
                         },
                       ),
                     ],
