@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/services/firebase_auth.dart';
+
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
   static String id = 'Login_View';
@@ -12,7 +13,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          AuthCubit(AuthRepoImplement(FirebaseAuthentication())),
+          AuthCubit(FirebaseAuthRepoImplement(FirebaseService())),
       child: LoginViewBody(),
     );
   }

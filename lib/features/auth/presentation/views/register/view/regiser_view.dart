@@ -5,14 +5,14 @@ import 'package:e_commerce_app/features/auth/presentation/views/register/view/re
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class RegiserView extends StatelessWidget {
   const RegiserView({super.key});
   static String id = 'RegisterView';
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthCubit(AuthRepoImplement(FirebaseAuthentication()) ),
+      create: (context) =>
+          AuthCubit(FirebaseAuthRepoImplement(FirebaseService())),
       child: RegisterViewBody(),
     );
   }

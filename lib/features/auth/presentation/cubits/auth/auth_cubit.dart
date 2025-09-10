@@ -7,7 +7,7 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this.authRepo) : super(AuthInitial());
 
-  final AuthRepo authRepo;
+  final FirebaseAuthRepo authRepo;
 
   Future<void> register({
     required String email,
@@ -37,7 +37,7 @@ class AuthCubit extends Cubit<AuthState> {
       await authRepo.signInWithEmailAndPassword(
         email: email,
         password: password,
-        fullName: fullName,
+        
       );
       emit(AuthSuccess());
     } catch (e) {
