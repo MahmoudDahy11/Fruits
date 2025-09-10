@@ -6,53 +6,102 @@ import 'package:e_commerce_app/features/auth/domain/entity/user_entity.dart';
 import 'package:e_commerce_app/features/auth/domain/repo/auth_repo.dart';
 import '../../../../core/services/firebase_auth.dart';
 
-class AuthRepoImplement implements AuthRepo {
+class FirebaseAuthRepoImplement extends FirebaseAuthRepo {
+  final FirebaseService _firebaseService;
+
+  FirebaseAuthRepoImplement(this._firebaseService);
+
   @override
-  AuthRepoImplement(this.firebaseAuthentication);
-  final FirebaseAuthentication firebaseAuthentication;
-  @override
-  Future<Either<Failure, UserEntity>> createUserWithEmailAndPassword({
+  Future<Either<CustomFailure, UserEntity>> createUserWithEmailAndPassword({
     required String email,
     required String password,
     required String name,
   }) async {
     try {
-      var user = await firebaseAuthentication.createUserWithEmailAndPassword(
+      var user = await _firebaseService.createUserWithEmailAndPassword(
         email: email,
         password: password,
-      );
-      UserModel userModel = UserModel.fromFireBase(user);
-      UserEntity userEntity = UserEntity(
         name: name,
-        email: email,
-        uId: user.uid,
       );
-      return right(userEntity);
-    } on CustomExcption catch (e) {
-      return left(Failure(errMessage: e.errMessage));
+
+      UserModel userModel = UserModel.fromFireBase(user);
+
+      userModel = UserModel(
+        uId: userModel.uId,
+        email: userModel.email,
+        name: name,
+      );
+
+      return right(userModel.toEntity());
+    } on CustomException catch (ex) {
+      return left(CustomFailure(errMessage: ex.errMessage));
     }
   }
 
   @override
-  Future<Either<Failure, UserEntity>> signInWithEmailAndPassword({
+  Future<Either<CustomFailure, UserEntity>> signInWithEmailAndPassword({
     required String email,
     required String password,
-    required String fullName,
   }) async {
     try {
-      var user = await firebaseAuthentication.signInWithEmailAndPassword(
+      var user = await _firebaseService.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
       UserModel userModel = UserModel.fromFireBase(user);
-      UserEntity userEntity = UserEntity(
-        email: email,
-        uId: user.uid,
-        name: fullName,
+
+      userModel = UserModel(
+        uId: userModel.uId,
+        email: userModel.email,
+        name: userModel.name,
       );
-      return right(userEntity);
-    } on CustomExcption catch (e) {
-      return left(Failure(errMessage: e.errMessage));
+
+      return right(userModel.toEntity());
+    } on CustomException catch (ex) {
+      return left(CustomFailure(errMessage: ex.errMessage));
+    }
+  }
+
+  @override
+  @override
+  Future<Either<CustomFailure, Unit>> signOut() async {
+    try {
+      await _firebaseService.signOut();
+      return right(unit);
+    } on CustomException catch (ex) {
+      return left(CustomFailure(errMessage: ex.errMessage));
+    }
+  }
+
+  @override
+  Future<Either<CustomFailure, Unit>> signInWithGoogle() async {
+    try {
+      await _firebaseService.signInWithGoogle();
+      return right(unit);
+    } on CustomException catch (ex) {
+      return left(CustomFailure(errMessage: ex.errMessage));
+    }
+  }
+
+  @override
+  Future<Either<CustomFailure, UserEntity>> signinWithFacebook() async {
+    try {
+      final userCredential = await _firebaseService.signInWithFacebook();
+
+      if (userCredential.user == null) {
+        return left(
+          CustomFailure(errMessage: "No user returned from Facebook login."),
+        );
+      }
+
+      final UserModel userModel = UserModel.fromFireBase(userCredential.user!);
+
+      return right(userModel.toEntity());
+    } on CustomException catch (e) {
+      return left(CustomFailure(errMessage: e.errMessage));
+    } catch (e) {
+      return left(CustomFailure(errMessage: e.toString()));
     }
   }
 }
