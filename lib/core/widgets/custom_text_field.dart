@@ -13,7 +13,7 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final Widget? suffix;
   Function(String?)? onSaved;
-  bool obscureText ;
+  bool obscureText;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
