@@ -18,8 +18,20 @@ class UserModel {
   factory UserModel.fromEntity(UserEntity user) {
     return UserModel(email: user.email, name: user.name, uId: user.uId);
   }
-  
+
   UserEntity toEntity() {
     return UserEntity(name: name, email: email, uId: uId);
+  }
+
+  factory UserModel.fromJson(json) {
+    return UserModel(
+      uId: json['uid'] as String,
+      name: json['name'] as String? ?? '',
+      email: json['email'] as String? ?? '',
+    );
+  }
+
+  toJson() {
+    return {'uid': uId, 'name': name, 'email': email};
   }
 }
