@@ -1,17 +1,17 @@
-import 'package:e_commerce_app/features/page_view/presentation/widgets/first_page.dart';
-import 'package:e_commerce_app/features/page_view/presentation/widgets/second_page.dart';
+import 'package:e_commerce_app/features/on_boarding/presentation/widgets/first_page.dart';
+import 'package:e_commerce_app/features/on_boarding/presentation/widgets/second_page.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class PageViewWelcome extends StatefulWidget {
-  const PageViewWelcome({super.key});
-  static String id = "page_view";
+class OnBoarding extends StatefulWidget {
+  const OnBoarding({super.key});
+  static const String id = "page_view";
 
   @override
-  State<PageViewWelcome> createState() => _PageViewWelcomeState();
+  State<OnBoarding> createState() => _OnBoardingState();
 }
 
-class _PageViewWelcomeState extends State<PageViewWelcome> {
+class _OnBoardingState extends State<OnBoarding> {
   final PageController _pageController = PageController();
 
   @override

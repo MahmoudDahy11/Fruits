@@ -2,13 +2,9 @@ import 'package:e_commerce_app/core/constant/constant.dart';
 import 'package:e_commerce_app/core/widgets/custom_botton.dart';
 import 'package:e_commerce_app/core/widgets/custom_create_account_text.dart';
 import 'package:e_commerce_app/core/widgets/custom_text_field.dart';
-import 'package:e_commerce_app/core/widgets/show_snak_bar.dart';
-import 'package:e_commerce_app/features/auth/presentation/cubits/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../../../../../shopping/presentation/views/home.dart';
 
 class RegisterViewBody extends StatefulWidget {
   const RegisterViewBody({super.key});
@@ -25,23 +21,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthLoading) {
-          isLoading = true;
-        } else if (state is AuthSuccess) {
-          isLoading = false;
-          showSnakBar(context, 'Register Success');
-          Future.delayed(Duration(seconds: 1), () {
-            Navigator.of(context).pushNamed(HomeView.id);
-          });
-        } else if (state is AuthFailure) {
-          isLoading = false;
-          showSnakBar(context, state.errMessage);
-        }
-      },
-      builder: (context, state) {
-        return GestureDetector(
+       return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             appBar: AppBar(
@@ -115,11 +95,11 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                         onTap: () async {
                           if (formKey.currentState!.validate()) {
                             formKey.currentState!.save();
-                            BlocProvider.of<AuthCubit>(context).register(
-                              email: email!,
-                              password: password!,
-                              fullName: fullName!,
-                            );
+                            // BlocProvider.of<AuthCubit>(context).register(
+                            //   email: email!,
+                            //   password: password!,
+                            //   fullName: fullName!,
+                            // );
                           }
                         },
                       ),
@@ -138,7 +118,5 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
             ),
           ),
         );
-      },
-    );
   }
 }

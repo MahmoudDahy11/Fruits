@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class ResetPasswordView extends StatelessWidget {
   const ResetPasswordView({super.key});
-  static String id = "Reset Password";
+  static const String id = "Reset Password";
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

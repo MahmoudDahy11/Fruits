@@ -8,7 +8,7 @@ import 'presentation/views/widgets/shopping_card.dart';
 
 class ProductsView extends StatefulWidget {
   const ProductsView({super.key});
-
+  static const String id = 'ProductsView';
   @override
   State<ProductsView> createState() => _ProductsViewState();
 }

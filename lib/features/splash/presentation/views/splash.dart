@@ -1,17 +1,17 @@
 import 'package:e_commerce_app/core/constant/assets.dart';
-import 'package:e_commerce_app/features/page_view/presentation/page_view.dart';
+import 'package:e_commerce_app/features/on_boarding/presentation/page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class SplashView extends StatefulWidget {
-  const SplashView({super.key});
-  static String id = 'splash';
+class Splash extends StatefulWidget {
+  const Splash({super.key});
+  static const String id = 'splash';
 
   @override
-  State<SplashView> createState() => _SplashViewState();
+  State<Splash> createState() => _SplashState();
 }
 
-class _SplashViewState extends State<SplashView> {
+class _SplashState extends State<Splash> {
   double _opacity = 0.0;
 
   @override
@@ -25,7 +25,7 @@ class _SplashViewState extends State<SplashView> {
     });
 
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacementNamed(PageViewWelcome.id);
+      Navigator.of(context).pushReplacementNamed(OnBoarding.id);
     });
   }
 
