@@ -6,11 +6,19 @@ import 'package:e_commerce_app/features/auth/domain/entity/user_entity.dart';
 import 'package:e_commerce_app/features/auth/domain/repo/auth_repo.dart';
 import '../../../../core/services/firebase_auth.dart';
 
+
+/*
+ * FirebaseAuthRepoImplement class
+ * implements FirebaseAuthRepo interface
+ * uses FirebaseService to perform authentication operations
+ */
 class FirebaseAuthRepoImplement extends FirebaseAuthRepo {
   final FirebaseService _firebaseService;
 
   FirebaseAuthRepoImplement(this._firebaseService);
 
+
+ 
   @override
   Future<Either<CustomFailure, UserEntity>> createUserWithEmailAndPassword({
     required String email,
