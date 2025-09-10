@@ -25,7 +25,7 @@ class Fruits extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Color(backGroundColor),
-        appBarTheme: AppBarTheme(color: Color(backGroundColor)),
+        appBarTheme: AppBarTheme(backgroundColor: Color(backGroundColor)),
       ),
       initialRoute: SplashView.id,
       routes: {
