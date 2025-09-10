@@ -3,8 +3,6 @@ import 'package:e_commerce_app/features/auth/domain/entity/user_entity.dart';
 import 'package:e_commerce_app/features/auth/domain/repo/auth_repo.dart';
 import 'package:meta/meta.dart';
 
-
-
 part 'signup_state.dart';
 
 class SignupCubit extends Cubit<SignupState> {

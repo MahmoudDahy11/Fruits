@@ -1,10 +1,17 @@
+import 'dart:developer';
+
 import 'package:e_commerce_app/core/constant/constant.dart';
+import 'package:e_commerce_app/core/helper/awesome_dialog.dart';
 import 'package:e_commerce_app/core/widgets/custom_botton.dart';
 import 'package:e_commerce_app/core/widgets/custom_create_account_text.dart';
 import 'package:e_commerce_app/core/widgets/custom_text_field.dart';
+import 'package:e_commerce_app/features/auth/presentation/cubits/signup_cubit/signup_cubit.dart';
+import 'package:e_commerce_app/features/auth/presentation/views/login/view/login_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
+import '../../../../../../core/helper/show_snak_bar.dart';
 
 class RegisterViewBody extends StatefulWidget {
   const RegisterViewBody({super.key});
@@ -21,32 +28,46 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
 
   @override
   Widget build(BuildContext context) {
-       return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Scaffold(
-            appBar: AppBar(
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.arrow_forward_ios),
-                ),
-              ],
-              automaticallyImplyLeading: false,
-              centerTitle: true,
-              title: const Text(
-                'حساب جديد',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: fontFamily,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+
+      child: BlocConsumer<SignupCubit, SignupState>(
+        listener: (context, state) {
+          if (state is SignupLoading) {
+            log("Register loading...");
+          } else if (state is SignupSuccess) {
+            showSnakBar(context, "Success Register");
+            Navigator.of(context).pushNamed(LoginView.id);
+          } else if (state is SignupFailure) {
+            showDialogMessage(context, desc: state.errMessage);
+            log(state.errMessage);
+          }
+        },
+        builder: (context, state) {
+          return ModalProgressHUD(
+            inAsyncCall: state is SignupLoading,
+            child: Scaffold(
+              appBar: AppBar(
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(Icons.arrow_forward_ios),
+                  ),
+                ],
+                automaticallyImplyLeading: false,
+                centerTitle: true,
+                title: const Text(
+                  'حساب جديد',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: fontFamily,
+                  ),
                 ),
               ),
-            ),
-            body: ModalProgressHUD(
-              inAsyncCall: isLoading,
-              child: Padding(
+              body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Form(
                   key: formKey,
@@ -95,11 +116,13 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                         onTap: () async {
                           if (formKey.currentState!.validate()) {
                             formKey.currentState!.save();
-                            // BlocProvider.of<AuthCubit>(context).register(
-                            //   email: email!,
-                            //   password: password!,
-                            //   fullName: fullName!,
-                            // );
+                            BlocProvider.of<SignupCubit>(
+                              context,
+                            ).createUserWithEmailAndPassword(
+                              email: email!,
+                              password: password!,
+                              name: fullName!,
+                            );
                           }
                         },
                       ),
@@ -116,7 +139,9 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                 ),
               ),
             ),
-          ),
-        );
+          );
+        },
+      ),
+    );
   }
 }
