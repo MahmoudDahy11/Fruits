@@ -1,9 +1,9 @@
-class Failure {
+class CustomFailure {
   final String errMessage;
 
-  Failure({required this.errMessage});
+  CustomFailure({required this.errMessage});
 }
 
-class ServerFailure extends Failure {
+class ServerFailure extends CustomFailure {
   ServerFailure({required super.errMessage});
 }
