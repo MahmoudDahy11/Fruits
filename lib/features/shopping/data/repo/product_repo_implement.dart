@@ -27,7 +27,11 @@ class ProductRepoImplement implements ProductRepo {
     Map<String, dynamic>? body,
   }) async {
     try {
-      await _apiService.delete(endPoint: endPoint, token: token, body: body);
+      await _apiService.delete(
+        endPoint: 'products/%7Bid%7D',
+        token: token,
+        body: body,
+      );
       return const Right(unit);
     } on CustomFailure catch (failure) {
       return Left(failure);
@@ -48,7 +52,7 @@ class ProductRepoImplement implements ProductRepo {
     String? token,
   }) async {
     try {
-      final data = await _apiService.get(endPoint: endPoint, token: token);
+      final data = await _apiService.get(endPoint: 'products', token: token);
       List<ProductEntity> products = [];
       for (var item in data as List) {
         final model = ProductModel.fromJson(item);
@@ -78,7 +82,7 @@ class ProductRepoImplement implements ProductRepo {
     try {
       final data = await _apiService.patch(
         endPoint: endPoint,
-        token: token,
+        token: 'products/%7Bid%7D',
         body: body,
       );
 
@@ -107,7 +111,7 @@ class ProductRepoImplement implements ProductRepo {
   }) async {
     try {
       final data = await _apiService.post(
-        endPoint: endPoint,
+        endPoint: 'products',
         token: token,
         body: body,
       );
@@ -137,7 +141,7 @@ class ProductRepoImplement implements ProductRepo {
   }) async {
     try {
       final data = await _apiService.put(
-        endPoint: endPoint,
+        endPoint: 'products/%7Bid%7D',
         token: token,
         body: body,
       );
