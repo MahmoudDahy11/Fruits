@@ -3,7 +3,6 @@ import 'package:e_commerce_app/core/errors/custom_excption.dart';
 import 'package:e_commerce_app/core/errors/failure.dart';
 import 'package:flutter/material.dart';
 
-
 /*
  * ApiService class
  * handles HTTP requests using Dio package
@@ -15,6 +14,13 @@ class ApiService {
 
   final String _baseUrl = 'https://fakestoreapi.com/';
 
+  /*
+* get method
+* makes a GET request to the specified endpoint
+* includes optional authorization token in headers
+* handles Dio exceptions and throws CustomException on error
+* returns response data on success
+*/
   Future<dynamic> get({
     required String endPoint,
     @required String? token,
@@ -39,6 +45,13 @@ class ApiService {
     }
   }
 
+  /*
+* post method
+* makes a POST request to the specified endpoint with optional body data
+* includes optional authorization token in headers
+* handles Dio exceptions and throws CustomException on error
+* returns response data on success
+*/
   Future<dynamic> post({
     required String endPoint,
     @required String? token,
@@ -63,6 +76,13 @@ class ApiService {
     }
   }
 
+  /*
+* put method
+* makes a PUT request to the specified endpoint with optional body data
+* includes optional authorization token in headers
+* handles Dio exceptions and throws CustomException on error
+* returns response data on success
+ */
   Future<dynamic> put({
     required String endPoint,
     @required String? token,
@@ -87,6 +107,13 @@ class ApiService {
     }
   }
 
+  /* 
+*patch method
+* makes a PATCH request to the specified endpoint with optional body data
+* includes optional authorization token in headers
+* handles Dio exceptions and throws CustomException on error
+* returns response data on success
+*/
   Future<dynamic> patch({
     required String endPoint,
     @required String? token,
@@ -111,6 +138,13 @@ class ApiService {
     }
   }
 
+  /* 
+*delete method
+* makes a DELETE request to the specified endpoint with optional body data
+* includes optional authorization token in headers
+* handles Dio exceptions and throws CustomException on error
+* returns response data on success
+*/
   Future<dynamic> delete({
     required String endPoint,
     @required String? token,
@@ -134,5 +168,4 @@ class ApiService {
       );
     }
   }
-
 }
