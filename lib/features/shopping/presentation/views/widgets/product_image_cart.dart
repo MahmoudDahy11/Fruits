@@ -5,8 +5,8 @@ import '../../../../../core/constant/assets.dart';
 import '../home.dart';
 
 class ProductImageCart extends StatelessWidget {
-  const ProductImageCart({super.key});
-
+  const ProductImageCart({super.key, required this.image});
+  final String image;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -16,16 +16,21 @@ class ProductImageCart extends StatelessWidget {
           width: MediaQuery.sizeOf(context).width,
         ),
         Positioned(
-          right: 80,
+          right: 100,
           bottom: 100,
-          child: SvgPicture.asset(Assets.imagesPageview1mage),
+          child: Image.network(
+            image,
+            height: 200,
+            width: 200,
+            fit: BoxFit.contain,
+          ),
         ),
         Positioned(
           top: 40,
           right: 20,
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(HomeView.id);
+              Navigator.of(context).pushReplacementNamed(HomeViewProduct.id);
             },
             child: Container(
               decoration: BoxDecoration(

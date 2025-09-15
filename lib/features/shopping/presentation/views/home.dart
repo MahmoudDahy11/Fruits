@@ -1,23 +1,27 @@
 import 'package:e_commerce_app/core/constant/assets.dart';
+import 'package:e_commerce_app/features/shopping/presentation/views/account_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+
 import '../../product_view.dart';
+import '../cubits/get_product/get_product_cubit.dart';
 import 'cart_view.dart';
 import 'widgets/card_item.dart';
 import 'widgets/custom_list_tile_info.dart';
 import 'widgets/custom_text_field_product.dart';
 import 'widgets/shopping_card.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class HomeViewProduct extends StatefulWidget {
+  const HomeViewProduct({super.key});
   static String id = 'Home_product_view';
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<HomeViewProduct> createState() => _HomeViewProductState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewProductState extends State<HomeViewProduct> {
   final List<Widget> _otherPages = const [
     ProductsView(),
     CartView(),
@@ -93,25 +97,51 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             ),
-            SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: ShoppingCard(),
-                ),
-                childCount: 20,
-              ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 0.8,
-              ),
+            BlocBuilder<GetProductCubit, GetProductState>(
+              builder: (context, state) {
+                if (state is GetProductLoading) {
+                  return const SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                } else if (state is GetProductFailure) {
+                  return SliverToBoxAdapter(
+                    child: Center(child: Text(state.errMessage)),
+                  );
+                } else if (state is GetProductSuccess) {
+                  return SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final product = state.products[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ShoppingCard(product: product),
+                        );
+                      },
+                      childCount: state.products.length,
+                    ),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 0.8,
+                    ),
+                  );
+                }
+                return const SliverToBoxAdapter(
+                  child: Center(child: Text("جاري تحميل المنتجات...")),
+                );
+              },
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<GetProductCubit>().getProducts(endPoint: "products");
   }
 
   @override
@@ -148,22 +178,6 @@ class _HomeViewState extends State<HomeView> {
               selectedColor: const Color(0xff1B5E37),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class AccountView extends StatelessWidget {
-  const AccountView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          "👤 حسابي",
-          style: TextStyle(fontSize: 25, fontFamily: 'Cairo'),
         ),
       ),
     );

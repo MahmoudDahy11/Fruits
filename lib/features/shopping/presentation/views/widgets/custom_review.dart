@@ -1,9 +1,13 @@
-
 import 'package:flutter/material.dart';
 
 class CustomReview extends StatelessWidget {
-  const CustomReview({super.key});
-
+  const CustomReview({
+    super.key,
+    required this.rating,
+    required this.reviewCount,
+  });
+  final String rating;
+  final String reviewCount;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -11,16 +15,16 @@ class CustomReview extends StatelessWidget {
         Icon(Icons.star, color: Color(0xffFFC529)),
         RichText(
           text: TextSpan(
-            text: '   4.5   ',
+            text: '   $rating   ',
             style: const TextStyle(
               fontFamily: 'Cairo',
               color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.w600,
             ),
-            children: const [
+            children: [
               TextSpan(
-                text: '(+30)   ',
+                text: '($reviewCount)   ',
                 style: TextStyle(
                   fontFamily: 'Cairo',
                   color: Colors.grey,

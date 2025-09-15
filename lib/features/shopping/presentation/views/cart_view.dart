@@ -7,7 +7,7 @@ import 'widgets/product_image_cart.dart';
 
 class CartView extends StatelessWidget {
   const CartView({super.key});
-
+  static const String id = 'Cart_view';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +18,7 @@ class CartView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProductImageCart(),
+                  ProductImageCart(image: ''),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
@@ -32,11 +32,11 @@ class CartView extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CustomTextSalary(),
+                    child: CustomTextSalary(salary: ''),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CustomReview(),
+                    child: CustomReview(rating: '', reviewCount: '',),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(

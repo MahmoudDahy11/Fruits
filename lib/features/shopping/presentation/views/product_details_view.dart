@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/features/shopping/domain/entity/product_entity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/custom_botton.dart';
@@ -7,8 +8,9 @@ import 'widgets/custom_text_salary.dart';
 import 'widgets/product_image_cart.dart';
 
 class ProductDetiallsView extends StatelessWidget {
-  const ProductDetiallsView({super.key});
+  const ProductDetiallsView({super.key, required this.product});
   static String id = 'ProductDetiallsView';
+  final ProductEntity product;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,11 +21,11 @@ class ProductDetiallsView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProductImageCart(),
+                  ProductImageCart(image: product.image),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      'فواكهه',
+                      product.category,
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         fontSize: 20,
@@ -32,12 +34,15 @@ class ProductDetiallsView extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CustomTextSalary(),
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CustomTextSalary(salary: product.price.toString()),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CustomReview(),
+                    child: CustomReview(
+                      rating: product.rate.toString(),
+                      reviewCount: product.count.toString(),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -45,9 +50,7 @@ class ProductDetiallsView extends StatelessWidget {
                       horizontal: 16,
                     ),
                     child: Text(
-                      'ينتمي إلى الفصيلة القرعية ولثمرته لُب حلو المذاق وقابل للأكل، '
-                      'وبحسب علم النبات فهي تعتبر ثمار لبيّة، تستعمل لفظة البطيخ '
-                      'للإشارة إلى النبات نفسه أو إلى الثمرة تحديداً',
+                      product.description,
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         color: Colors.grey,

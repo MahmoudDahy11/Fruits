@@ -1,70 +1,39 @@
+import 'package:e_commerce_app/features/shopping/domain/entity/product_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
-class ListViweGenerate extends StatefulWidget {
-  const ListViweGenerate({super.key});
-
-  @override
-  State<ListViweGenerate> createState() => _ListViweGenerateState();
-}
-
-class _ListViweGenerateState extends State<ListViweGenerate> {
-  List<Map> photos = [
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-    {'name': 'اناناس', 'image': 'assets/images/pageview2image.svg'},
-    {'name': 'بطيخ', 'image': 'assets/images/pageview1mage.svg'},
-  ];
+class ListViweGenerate extends StatelessWidget {
+  const ListViweGenerate({super.key, required this.product});
+  final ProductEntity product;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: List.generate(photos.length, (index) {
-        return Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 4),
-              margin: EdgeInsets.symmetric(horizontal: 4),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                shape: BoxShape.circle,
-              ),
-              child: SvgPicture.asset(photos[index]['image']!, height: 70),
+    return SizedBox(
+      height: 120,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              shape: BoxShape.circle,
             ),
-            Text(
-              photos[index]['name'],
-              style: TextStyle(
-                fontFamily: 'Cairo',
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
-              ),
+            child: Center(
+              child: Image.network(product.image, height: 80, width: 80),
             ),
-          ],
-        );
-      }),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            product.category,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: 'Cairo',
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
