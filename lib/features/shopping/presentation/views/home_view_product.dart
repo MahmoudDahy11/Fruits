@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-import '../../product_view.dart';
+import 'product_view.dart';
 import '../cubits/get_product/get_product_cubit.dart';
+import '../cubits/cart/cart_cubit.dart';
 import 'cart_view.dart';
 import 'widgets/card_item.dart';
 import 'widgets/custom_list_tile_info.dart';
@@ -109,22 +110,20 @@ class _HomeViewProductState extends State<HomeViewProduct> {
                   );
                 } else if (state is GetProductSuccess) {
                   return SliverGrid(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final product = state.products[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ShoppingCard(product: product),
-                        );
-                      },
-                      childCount: state.products.length,
-                    ),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                      childAspectRatio: 0.8,
-                    ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final product = state.products[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ShoppingCard(product: product),
+                      );
+                    }, childCount: state.products.length),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                          childAspectRatio: 0.8,
+                        ),
                   );
                 }
                 return const SliverToBoxAdapter(
@@ -168,7 +167,36 @@ class _HomeViewProductState extends State<HomeViewProduct> {
               selectedColor: const Color(0xff1B5E37),
             ),
             SalomonBottomBarItem(
-              icon: SvgPicture.asset(Assets.imagesShoppingCart, height: 30),
+              icon: BlocBuilder<CartCubit, CartState>(
+                builder: (context, state) {
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      SvgPicture.asset(Assets.imagesShoppingCart, height: 30),
+                      if (state.items.isNotEmpty)
+                        Positioned(
+                          right: -6,
+                          top: -6,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              state.items.length.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
               title: const Text("السلة"),
               selectedColor: const Color(0xff1B5E37),
             ),
