@@ -1,74 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/widgets/custom_botton.dart';
-import 'widgets/custom_details_cart.dart';
-import 'widgets/custom_review.dart';
-import 'widgets/custom_text_salary.dart';
-import 'widgets/product_image_cart.dart';
+import '../cubits/cart/cart_cubit.dart';
+import 'widgets/cart_item_details.dart';
+import 'widgets/custom_app_bar.dart';
+import 'widgets/number_of_product.dart';
 
-class CartView extends StatelessWidget {
+class CartView extends StatefulWidget {
   const CartView({super.key});
   static const String id = 'Cart_view';
+
+  @override
+  State<CartView> createState() => _CartViewState();
+}
+
+class _CartViewState extends State<CartView> {
+  @override
+  void initState() {
+    context.read<CartCubit>().loadCart();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ProductImageCart(image: ''),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      'فواكهه',
-                      style: TextStyle(
-                        fontFamily: 'Cairo',
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CustomTextSalary(salary: ''),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CustomReview(rating: '', reviewCount: '',),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 24.0,
-                      horizontal: 16,
-                    ),
-                    child: Text(
-                      'ينتمي إلى الفصيلة القرعية ولثمرته لُب حلو المذاق وقابل للأكل، '
-                      'وبحسب علم النبات فهي تعتبر ثمار لبيّة، تستعمل لفظة البطيخ '
-                      'للإشارة إلى النبات نفسه أو إلى الثمرة تحديداً',
-                      style: TextStyle(
-                        fontFamily: 'Cairo',
-                        color: Colors.grey,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CustonDetailsCart(),
-                  ),
-                ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            const CustomAppBar(),
+            const SizedBox(height: 20),
+            BlocBuilder<CartCubit, CartState>(
+              builder: (context, state) {
+                return NumberOfProduct(count: state.items.length);
+              },
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: BlocBuilder<CartCubit, CartState>(
+                builder: (context, state) {
+                  if (state.items.isEmpty) {
+                    return const Center(child: Text("السلة فارغة"));
+                  }
+                  return ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    itemCount: state.items.length,
+                    itemBuilder: (context, index) {
+                      final item = state.items[index];
+                      return CartItemDetails(item: item);
+                    },
+                  );
+                },
               ),
             ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: CustomBotton(text: 'أضف الي السلة', onTap: () {}),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 28.0,
+                vertical: 16,
+              ),
+              child: BlocBuilder<CartCubit, CartState>(
+                builder: (context, state) {
+                  if (state.items.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  return CustomBotton(
+                    text: 'الدفع ${state.total.toStringAsFixed(2)} جنيه',
+                    onTap: () {},
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
