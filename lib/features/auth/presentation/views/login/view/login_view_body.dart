@@ -8,7 +8,7 @@ import 'package:e_commerce_app/features/auth/presentation/views/login/widgets/cu
 import 'package:e_commerce_app/features/auth/presentation/views/login/widgets/custom_check_text.dart';
 import 'package:e_commerce_app/features/auth/presentation/views/login/widgets/custom_list_tile.dart';
 import 'package:e_commerce_app/features/auth/presentation/views/register/view/regiser_view.dart';
-import 'package:e_commerce_app/features/shopping/presentation/views/home.dart';
+import 'package:e_commerce_app/features/shopping/presentation/views/home_view_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';

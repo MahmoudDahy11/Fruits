@@ -5,7 +5,7 @@ import 'package:e_commerce_app/features/shopping/presentation/views/widgets/shop
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../core/constant/assets.dart';
+import '../../../../core/constant/assets.dart';
 
 class ProductsView extends StatefulWidget {
   const ProductsView({super.key});
@@ -81,7 +81,7 @@ class _ProductsViewState extends State<ProductsView> {
                 final products = state.products;
                 return SliverToBoxAdapter(
                   child: SizedBox(
-                    height: 150, // ارتفاع ListView الأفقي
+                    height: 150,  
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: products.length,
