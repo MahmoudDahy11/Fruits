@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../../core/constant/assets.dart';
 import '../../../domain/entity/product_entity.dart';
+import '../../cubits/cart/cart_cubit.dart';
 import '../product_details_view.dart';
 
 class ShoppingCard extends StatefulWidget {
@@ -120,7 +122,22 @@ class _ShoppingCardState extends State<ShoppingCard> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                SvgPicture.asset(Assets.imagesCount2, height: width * 0.07),
+                IconButton(
+                  onPressed: () {
+                    context.read<CartCubit>().addProduct(widget.product);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          "${widget.product.title} تمت إضافته للسلة",
+                        ),
+                      ),
+                    );
+                  },
+                  icon: SvgPicture.asset(
+                    Assets.imagesCount2,
+                    height: width * 0.07,
+                  ),
+                ),
               ],
             ),
           ],
