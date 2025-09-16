@@ -1,16 +1,24 @@
 import 'package:e_commerce_app/features/shopping/domain/entity/product_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/widgets/custom_botton.dart';
+import '../cubits/cart/cart_cubit.dart';
 import 'widgets/custom_details_cart.dart';
 import 'widgets/custom_review.dart';
 import 'widgets/custom_text_salary.dart';
 import 'widgets/product_image_cart.dart';
 
-class ProductDetiallsView extends StatelessWidget {
+class ProductDetiallsView extends StatefulWidget {
   const ProductDetiallsView({super.key, required this.product});
   static String id = 'ProductDetiallsView';
   final ProductEntity product;
+
+  @override
+  State<ProductDetiallsView> createState() => _ProductDetiallsViewState();
+}
+
+class _ProductDetiallsViewState extends State<ProductDetiallsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,11 +29,11 @@ class ProductDetiallsView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProductImageCart(image: product.image),
+                  ProductImageCart(image: widget.product.image),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      product.category,
+                      widget.product.category,
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         fontSize: 20,
@@ -35,13 +43,15 @@ class ProductDetiallsView extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CustomTextSalary(salary: product.price.toString()),
+                    child: CustomTextSalary(
+                      salary: widget.product.price.toString(),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: CustomReview(
-                      rating: product.rate.toString(),
-                      reviewCount: product.count.toString(),
+                      rating: widget.product.rate.toString(),
+                      reviewCount: widget.product.count.toString(),
                     ),
                   ),
                   Padding(
@@ -50,7 +60,7 @@ class ProductDetiallsView extends StatelessWidget {
                       horizontal: 16,
                     ),
                     child: Text(
-                      product.description,
+                      widget.product.description,
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         color: Colors.grey,
@@ -70,7 +80,17 @@ class ProductDetiallsView extends StatelessWidget {
 
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: CustomBotton(text: 'أضف الي السلة', onTap: () {}),
+            child: CustomBotton(
+              text: 'أضف الي السلة',
+              onTap: () {
+                BlocProvider.of<CartCubit>(context).addProduct(widget.product);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("${widget.product.title} تمت إضافته للسلة"),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
