@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../../core/constant/assets.dart';
-import '../home.dart';
 
 class ProductImageCart extends StatelessWidget {
   const ProductImageCart({super.key, required this.image});
@@ -30,7 +29,7 @@ class ProductImageCart extends StatelessWidget {
           right: 20,
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(HomeViewProduct.id);
+              Navigator.of(context).pop();
             },
             child: Container(
               decoration: BoxDecoration(
