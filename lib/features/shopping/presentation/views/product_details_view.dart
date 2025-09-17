@@ -80,15 +80,10 @@ class _ProductDetiallsViewState extends State<ProductDetiallsView> {
 
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: CustomBotton(
+            child: CustomButton(
               text: 'أضف الي السلة',
               onTap: () {
                 BlocProvider.of<CartCubit>(context).addProduct(widget.product);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("${widget.product.title} تمت إضافته للسلة"),
-                  ),
-                );
               },
             ),
           ),

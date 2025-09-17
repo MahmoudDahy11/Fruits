@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
+import '../cubits/fav/favorite_cubit.dart';
+import 'fav_view.dart';
 import 'product_view.dart';
 import '../cubits/get_product/get_product_cubit.dart';
 import '../cubits/cart/cart_cubit.dart';
@@ -25,11 +27,30 @@ class HomeViewProduct extends StatefulWidget {
 class _HomeViewProductState extends State<HomeViewProduct> {
   final List<Widget> _otherPages = const [
     ProductsView(),
+    FavoriteView(),
     CartView(),
     AccountView(),
   ];
 
   int _currentIndex = 0;
+  List<dynamic> _allProducts = [];
+  List<dynamic> _filteredProducts = [];
+
+  void _filterProducts(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        _filteredProducts = _allProducts;
+      } else {
+        _filteredProducts = _allProducts
+            .where(
+              (product) => product.title.toLowerCase().startsWith(
+                query.toLowerCase().trim(),
+              ),
+            )
+            .toList();
+      }
+    });
+  }
 
   Widget _buildHomePage() {
     return SafeArea(
@@ -45,29 +66,29 @@ class _HomeViewProductState extends State<HomeViewProduct> {
               ),
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 30)),
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: CustomTextFieldProduct(),
-              ),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 30)),
             SliverToBoxAdapter(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * .22,
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CardItem(),
-                    );
-                  },
-                ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: CustomTextFieldProduct(onChanged: _filterProducts),
               ),
             ),
+            // const SliverToBoxAdapter(child: SizedBox(height: 30)),
+            // SliverToBoxAdapter(
+            //   child: SizedBox(
+            //     height: MediaQuery.of(context).size.height * .22,
+            //     child: ListView.builder(
+            //       physics: const BouncingScrollPhysics(),
+            //       scrollDirection: Axis.horizontal,
+            //       itemCount: 10,
+            //       itemBuilder: (context, index) {
+            //         return const Padding(
+            //           padding: EdgeInsets.symmetric(horizontal: 16.0),
+            //           child: CardItem(),
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -109,14 +130,18 @@ class _HomeViewProductState extends State<HomeViewProduct> {
                     child: Center(child: Text(state.errMessage)),
                   );
                 } else if (state is GetProductSuccess) {
+                  if (_allProducts.isEmpty) {
+                    _allProducts = state.products;
+                    _filteredProducts = _allProducts;
+                  }
                   return SliverGrid(
                     delegate: SliverChildBuilderDelegate((context, index) {
-                      final product = state.products[index];
+                      final product = _filteredProducts[index];
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ShoppingCard(product: product),
                       );
-                    }, childCount: state.products.length),
+                    }, childCount: _filteredProducts.length),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
@@ -166,6 +191,45 @@ class _HomeViewProductState extends State<HomeViewProduct> {
               title: const Text("المنتجات"),
               selectedColor: const Color(0xff1B5E37),
             ),
+            SalomonBottomBarItem(
+              icon: BlocBuilder<FavoriteCubit, FavoriteState>(
+                builder: (context, state) {
+                  int favCount = 0;
+                  if (state is FavoriteUpdated) {
+                    favCount = state.favorites.length;
+                  }
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      SvgPicture.asset(Assets.imagesHeart, height: 30),
+                      if (favCount > 0)
+                        Positioned(
+                          right: -6,
+                          top: -6,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              favCount.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+              title: const Text("المفضلة"),
+              selectedColor: const Color(0xff1B5E37),
+            ),
+
             SalomonBottomBarItem(
               icon: BlocBuilder<CartCubit, CartState>(
                 builder: (context, state) {

@@ -16,6 +16,17 @@ class ProductsView extends StatefulWidget {
 }
 
 class _ProductsViewState extends State<ProductsView> {
+  String searchQuery = '';
+
+  List _filterProducts(List allProducts) {
+    if (searchQuery.isEmpty) return allProducts;
+    return allProducts
+        .where(
+          (product) => product.title.toLowerCase().startsWith(searchQuery.toLowerCase()),
+        )
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,105 +51,79 @@ class _ProductsViewState extends State<ProductsView> {
           ),
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-              child: CustomTextFieldProduct(),
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-              child: Row(
-                children: [
-                  Text(
-                    "منتجاتنا",
-                    style: TextStyle(
-                      fontFamily: 'Cairo',
-                      fontWeight: FontWeight.w900,
-                      fontSize: 20,
+      body: BlocBuilder<GetProductCubit, GetProductState>(
+        builder: (context, state) {
+          if (state is GetProductLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is GetProductFailure) {
+            return Center(child: Text(state.errMessage));
+          } else if (state is GetProductSuccess) {
+            final allProducts = state.products;
+            final filteredProducts = _filterProducts(allProducts);
+
+            return CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 8.0,
+                    ),
+                    child: CustomTextFieldProduct(
+                      onChanged: (value) {
+                        setState(() {
+                          searchQuery = value;
+                        });
+                      },
                     ),
                   ),
-                  Spacer(),
-                  Icon(Icons.filter_list),
-                ],
-              ),
-            ),
-          ),
-          BlocBuilder<GetProductCubit, GetProductState>(
-            builder: (context, state) {
-              if (state is GetProductLoading) {
-                return const SliverToBoxAdapter(
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              } else if (state is GetProductFailure) {
-                return SliverToBoxAdapter(
-                  child: Center(child: Text(state.errMessage)),
-                );
-              } else if (state is GetProductSuccess) {
-                final products = state.products;
-                return SliverToBoxAdapter(
+                ),
+                SliverToBoxAdapter(
                   child: SizedBox(
-                    height: 150,  
+                    height: 150,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: products.length,
+                      itemCount: allProducts.length,
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: ListViweGenerate(product: products[index]),
+                          child: ListViweGenerate(product: allProducts[index]),
                         );
                       },
                     ),
                   ),
-                );
-              } else {
-                return const SliverToBoxAdapter(child: SizedBox());
-              }
-            },
-          ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
-              child: Row(
-                children: [
-                  Text(
-                    "الأكثر مبيعا",
-                    style: TextStyle(
-                      fontFamily: 'Cairo',
-                      fontWeight: FontWeight.w900,
-                      fontSize: 20,
+                ),
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 16,
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "الأكثر مبيعا",
+                          style: TextStyle(
+                            fontFamily: 'Cairo',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          "المزيد",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontFamily: 'Cairo',
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Spacer(),
-                  Text(
-                    "المزيد",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontFamily: 'Cairo',
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          BlocBuilder<GetProductCubit, GetProductState>(
-            builder: (context, state) {
-              if (state is GetProductLoading) {
-                return const SliverToBoxAdapter(
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              } else if (state is GetProductFailure) {
-                return SliverToBoxAdapter(
-                  child: Center(child: Text(state.errMessage)),
-                );
-              } else if (state is GetProductSuccess) {
-                final products = state.products;
-                return SliverPadding(
+                ),
+                SliverPadding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8.0,
                     vertical: 16,
@@ -146,8 +131,8 @@ class _ProductsViewState extends State<ProductsView> {
                   sliver: SliverGrid(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) =>
-                          ShoppingCard(product: products[index]),
-                      childCount: products.length,
+                          ShoppingCard(product: filteredProducts[index]),
+                      childCount: filteredProducts.length,
                     ),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -157,13 +142,13 @@ class _ProductsViewState extends State<ProductsView> {
                           childAspectRatio: 0.7,
                         ),
                   ),
-                );
-              } else {
-                return const SliverToBoxAdapter(child: SizedBox());
-              }
-            },
-          ),
-        ],
+                ),
+              ],
+            );
+          } else {
+            return const Center(child: Text("جاري تحميل المنتجات..."));
+          }
+        },
       ),
     );
   }

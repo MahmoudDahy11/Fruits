@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/core/helper/show_snak_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../../core/constant/assets.dart';
 import '../../../domain/entity/product_entity.dart';
 import '../../cubits/cart/cart_cubit.dart';
+import '../../cubits/fav/favorite_cubit.dart';
 import '../product_details_view.dart';
 
 class ShoppingCard extends StatefulWidget {
@@ -16,8 +18,6 @@ class ShoppingCard extends StatefulWidget {
 }
 
 class _ShoppingCardState extends State<ShoppingCard> {
-  bool check = false;
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -39,19 +39,40 @@ class _ShoppingCardState extends State<ShoppingCard> {
           children: [
             Align(
               alignment: Alignment.topRight,
-              child: IconButton(
-                onPressed: () {
-                  setState(() {
-                    check = !check;
-                  });
+              child: BlocBuilder<FavoriteCubit, FavoriteState>(
+                builder: (context, state) {
+                  final isFavorite =
+                      state is FavoriteUpdated &&
+                      state.favorites.any((p) => p.id == widget.product.id);
+
+                  return IconButton(
+                    onPressed: () {
+                      context.read<FavoriteCubit>().toggleFavorite(
+                        widget.product,
+                        isFavorite,
+                      );
+                      if (isFavorite) {
+                        showSnakBar(
+                          context,
+                          "Removed from favorites",
+                          isError: true,
+                        );
+                      } else {
+                        showSnakBar(context, "Added to favorites ❤️");
+                      }
+                    },
+                    icon: Icon(
+                      isFavorite
+                          ? Icons.favorite
+                          : Icons.favorite_outline_rounded,
+                      color: isFavorite ? Colors.red : Colors.black,
+                      size: width * 0.07,
+                    ),
+                  );
                 },
-                icon: Icon(
-                  check ? Icons.favorite : Icons.favorite_outline_rounded,
-                  color: check ? Colors.red : Colors.black,
-                  size: width * 0.07,
-                ),
               ),
             ),
+
             Expanded(
               child: Center(
                 child: Image.network(
@@ -73,6 +94,7 @@ class _ShoppingCardState extends State<ShoppingCard> {
               ),
             ),
             const SizedBox(height: 8),
+
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -107,30 +129,19 @@ class _ShoppingCardState extends State<ShoppingCard> {
                               ),
                             ),
                           ),
-                          // Text(
-                          //   "الكيلو",
-                          //   style: TextStyle(
-                          //     fontSize: width * 0.035,
-                          //     fontFamily: 'Cairo',
-                          //     fontWeight: FontWeight.w700,
-                          //     color: const Color(0xffF8C76D),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(width: 8),
+
                 IconButton(
                   onPressed: () {
                     context.read<CartCubit>().addProduct(widget.product);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          "${widget.product.title} تمت إضافته للسلة",
-                        ),
-                      ),
+                    showSnakBar(
+                      context,
+                      "${widget.product.title} تمت إضافته للسلة",
                     );
                   },
                   icon: SvgPicture.asset(

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 /*
  * showDialogMessage function
  * displays a customizable dialog using AwesomeDialog package
- * parameters include context, dialog type, title, description, and callbacks for OK and Cancel buttons
  */
 void showDialogMessage(
   BuildContext context, {
@@ -17,14 +16,32 @@ void showDialogMessage(
   AwesomeDialog(
     context: context,
     dialogType: dialogType,
-    borderSide: const BorderSide(width: 2),
-    buttonsBorderRadius: const BorderRadius.all(Radius.circular(2)),
+    animType: AnimType.scale, // حركة لطيفة
     headerAnimationLoop: false,
-    animType: AnimType.bottomSlide,
+    borderSide: BorderSide(
+      color: dialogType == DialogType.success
+          ? Colors.green
+          : dialogType == DialogType.error
+          ? Colors.red
+          : Colors.blueAccent,
+      width: 2,
+    ),
+    btnOkColor: dialogType == DialogType.success
+        ? Colors.green
+        : dialogType == DialogType.error
+        ? Colors.red
+        : Colors.blueAccent,
+    buttonsBorderRadius: const BorderRadius.all(Radius.circular(12)),
+    dismissOnTouchOutside: true,
+    dismissOnBackKeyPress: true,
+    dialogBorderRadius: BorderRadius.circular(20), // زوايا ناعمة
     title: title,
+    titleTextStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     desc: desc,
-    showCloseIcon: true,
+    descTextStyle: const TextStyle(fontSize: 16, color: Colors.black87),
     btnCancelOnPress: onCancel,
     btnOkOnPress: onOk,
+    btnCancelText: "Cancel",
+    btnOkText: "OK",
   ).show();
 }

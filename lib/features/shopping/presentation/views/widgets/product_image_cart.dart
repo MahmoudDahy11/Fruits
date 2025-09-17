@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -25,18 +26,27 @@ class ProductImageCart extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 40,
+          top: 60,
           right: 20,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(
+                    CupertinoIcons.back,
+                    color: Colors.black,
+                    size: 30,
+                  ),
+                ),
               ),
-              child: Icon(Icons.arrow_back_ios, color: Colors.black),
             ),
           ),
         ),
