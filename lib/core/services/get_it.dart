@@ -18,9 +18,13 @@ import '../../features/auth/presentation/cubits/google_cubit/google_cubit.dart';
 import '../../features/auth/presentation/cubits/login_cubit/login_cubit.dart';
 import '../../features/auth/presentation/cubits/signout_cubit/signout_cubit.dart';
 import '../../features/auth/presentation/cubits/signup_cubit/signup_cubit.dart';
+import '../../features/shopping/data/repo/fav_repo_implement.dart';
 import '../../features/shopping/data/service/cart_service.dart';
+import '../../features/shopping/data/service/favorite_firestore.dart';
 import '../../features/shopping/domain/repo/cart_repository.dart';
+import '../../features/shopping/domain/repo/fav_repo.dart';
 import '../../features/shopping/presentation/cubits/cart/cart_cubit.dart';
+import '../../features/shopping/presentation/cubits/fav/favorite_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -36,6 +40,9 @@ Future<void> getItSetup() async {
   getIt.registerLazySingleton<CartFirestoreService>(
     () => CartFirestoreService(),
   );
+  getIt.registerLazySingleton<FavoriteFirestoreService>(
+    () => FavoriteFirestoreService(),
+  );
 
   // repo
   getIt.registerLazySingleton<FirebaseAuthRepo>(
@@ -44,6 +51,9 @@ Future<void> getItSetup() async {
   getIt.registerLazySingleton<ProductRepo>(() => ProductRepoImplement(getIt()));
   getIt.registerLazySingleton<CartRepository>(
     () => CartRepositoryImpl(service: getIt<CartFirestoreService>()),
+  );
+  getIt.registerLazySingleton<FavoriteRepository>(
+    () => FavoriteRepositoryImpl(getIt<FavoriteFirestoreService>()),
   );
 
   /// Cubits
@@ -59,4 +69,6 @@ Future<void> getItSetup() async {
   getIt.registerFactory(() => PutProductCubit(getIt()));
   getIt.registerFactory(() => PatchProductCubit(getIt()));
   getIt.registerFactory(() => CartCubit(getIt()));
+
+  getIt.registerFactory(() => FavoriteCubit(getIt()));
 }
