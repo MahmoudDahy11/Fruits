@@ -16,7 +16,7 @@ void showDialogMessage(
   AwesomeDialog(
     context: context,
     dialogType: dialogType,
-    animType: AnimType.scale, // حركة لطيفة
+    animType: AnimType.scale, 
     headerAnimationLoop: false,
     borderSide: BorderSide(
       color: dialogType == DialogType.success
@@ -34,7 +34,7 @@ void showDialogMessage(
     buttonsBorderRadius: const BorderRadius.all(Radius.circular(12)),
     dismissOnTouchOutside: true,
     dismissOnBackKeyPress: true,
-    dialogBorderRadius: BorderRadius.circular(20), // زوايا ناعمة
+    dialogBorderRadius: BorderRadius.circular(20), 
     title: title,
     titleTextStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     desc: desc,
