@@ -63,7 +63,7 @@ class _CartViewState extends State<CartView> {
                   if (state.items.isEmpty) {
                     return const SizedBox.shrink();
                   }
-                  return CustomBotton(
+                  return CustomButton(
                     text: 'الدفع ${state.total.toStringAsFixed(2)} جنيه',
                     onTap: () {},
                   );
