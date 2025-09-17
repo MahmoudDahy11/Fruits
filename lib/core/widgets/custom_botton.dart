@@ -1,8 +1,8 @@
 import 'package:e_commerce_app/core/constant/constant.dart';
 import 'package:flutter/material.dart';
 
-class CustomBotton extends StatelessWidget {
-  const CustomBotton({super.key, required this.text, required this.onTap});
+class CustomButton extends StatelessWidget {
+  const CustomButton({super.key, required this.text, required this.onTap});
   final String text;
   final VoidCallback onTap;
   @override
