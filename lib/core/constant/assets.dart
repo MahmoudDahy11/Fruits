@@ -11,6 +11,7 @@ class Assets {
   static const String calory = "assets/images/calory.svg";
   static const String organic = "assets/images/organic.svg";
   static const String star = "assets/images/star.svg";
+  static const String wallet = "assets/images/wallet.svg";
 
   /// Assets for imagesAppleIcons
   /// assets/images/AppleIcons.svg
