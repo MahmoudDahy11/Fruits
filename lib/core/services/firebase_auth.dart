@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-
 /*
  * FirebaseService class
  * handles Firebase Authentication and Firestore operations
@@ -118,7 +117,7 @@ class FirebaseService {
     try {
       await _auth.signOut();
       await GoogleSignIn().signOut();
-      await FacebookAuth.instance.logOut();
+      // await FacebookAuth.instance.logOut();
     } catch (e) {
       throw CustomException(errMessage: 'Sign out failed: ${e.toString()}');
     }
