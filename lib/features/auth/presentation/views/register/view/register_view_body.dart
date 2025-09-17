@@ -111,7 +111,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                         obscureText: obscureText,
                       ),
                       const SizedBox(height: 80),
-                      CustomBotton(
+                      CustomButton(
                         text: 'انشاء حساب جديد',
                         onTap: () async {
                           if (formKey.currentState!.validate()) {

@@ -56,7 +56,7 @@ class SecondPage extends StatelessWidget {
             const SizedBox(height: 40),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 28.0),
-              child: CustomBotton(
+              child: CustomButton(
                 text: 'ابدأ الان',
                 onTap: () {
                   Navigator.of(context).pushReplacementNamed(LoginView.id);

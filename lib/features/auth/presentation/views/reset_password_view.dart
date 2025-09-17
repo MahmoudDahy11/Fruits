@@ -46,7 +46,7 @@ class ResetPasswordView extends StatelessWidget {
               const SizedBox(height: 20),
               CustomTextField(hintText: 'ادخال رقم الهاتف', obscureText: false),
               const SizedBox(height: 40),
-              CustomBotton(text: 'تأكيد', onTap: () {}),
+              CustomButton(text: 'تأكيد', onTap: () {}),
             ],
           ),
         ),

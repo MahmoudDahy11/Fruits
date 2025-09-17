@@ -71,7 +71,7 @@ class FirebaseAuthRepoImplement extends FirebaseAuthRepo {
     }
   }
 
-  @override
+
   @override
   Future<Either<CustomFailure, Unit>> signOut() async {
     try {

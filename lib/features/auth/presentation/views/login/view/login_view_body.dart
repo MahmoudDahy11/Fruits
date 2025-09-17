@@ -41,7 +41,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
             } else if (state is GoogleSuccess) {
               log("Google login loading...");
               showSnakBar(context, "Google login success");
-              Navigator.of(context).pushNamed(HomeViewProduct.id);
+              Navigator.of(context).pushReplacementNamed(HomeViewProduct.id);
             } else if (state is GoogleFailure) {
               showDialogMessage(context, desc: state.errMessage);
               log("Google error: ${state.errMessage}");
@@ -55,7 +55,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
             log("Login loading...");
           } else if (state is LoginSuccess) {
             showSnakBar(context, "Login Register");
-            Navigator.of(context).pushNamed(HomeViewProduct.id);
+            Navigator.of(context).pushReplacementNamed(HomeViewProduct.id);
           } else if (state is LoginFailure) {
             showDialogMessage(context, desc: state.errMessage);
             log(state.errMessage);
@@ -127,7 +127,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                             ),
                           ),
                           const SizedBox(height: 80),
-                          CustomBotton(
+                          CustomButton(
                             text: 'تسجيل الدخول',
                             onTap: () {
                               if (formKey.currentState!.validate()) {
