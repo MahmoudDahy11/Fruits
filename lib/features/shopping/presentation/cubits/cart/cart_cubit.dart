@@ -1,56 +1,78 @@
-import 'package:bloc/bloc.dart';
-import 'package:e_commerce_app/features/shopping/domain/entity/cart_entity.dart';
-import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../domain/entity/cart_entity.dart';
 import '../../../domain/entity/product_entity.dart';
 import '../../../domain/repo/cart_repository.dart';
-
-part 'cart_state.dart';
+import 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
-  final CartRepository repository;
-  CartCubit(this.repository) : super(const CartState());
+  final CartRepository cartRepository;
+
+  CartCubit(this.cartRepository) : super(CartInitial());
 
   Future<void> loadCart() async {
-    final items = await repository.getCart();
-    emit(state.copyWith(items: items, total: _calculateTotal(items)));
+    try {
+      emit(CartLoading());
+      final items = await cartRepository.getCart();
+      emit(CartLoaded(items));
+    } catch (e) {
+      emit(CartError(e.toString()));
+    }
   }
 
   Future<void> addProduct(ProductEntity product) async {
-    await repository.addProduct(product);
-    await loadCart();
-  }
-
-  Future<void> removeProduct(int productId) async {
-    await repository.removeProduct(productId);
-    await loadCart();
-  }
-
-  Future<void> increaseQuantity(int productId) async {
-    final item = state.items.firstWhere((i) => i.product.id == productId);
-    await repository.updateQuantity(productId, item.quantity + 1);
-    await loadCart();
-  }
-
-  Future<void> decreaseQuantity(int productId) async {
-    final item = state.items.firstWhere((i) => i.product.id == productId);
-    final newQty = item.quantity - 1;
-    if (newQty > 0) {
-      await repository.updateQuantity(productId, newQty);
-    } else {
-      await repository.removeProduct(productId);
+    try {
+      if (state is CartLoaded) {
+        final items = List<CartItemEntity>.from((state as CartLoaded).items);
+        final index = items.indexWhere((e) => e.product.id == product.id);
+        if (index >= 0) {
+          items[index] =
+              items[index].copyWith(quantity: items[index].quantity + 1);
+        } else {
+          items.add(CartItemEntity(product: product, quantity: 1));
+        }
+        emit(CartLoaded(items));
+      } else {
+        final items = [CartItemEntity(product: product, quantity: 1)];
+        emit(CartLoaded(items));
+      }
+      await cartRepository.addProduct(CartItemEntity(product: product, quantity: 1));
+    } catch (e) {
+      emit(CartError(e.toString()));
     }
-    await loadCart();
   }
 
-  Future<void> clearCart() async {
-    await repository.clearCart();
-    await loadCart();
+  Future<void> decreaseQuantity(String productId) async {
+    if (state is CartLoaded) {
+      final items = List<CartItemEntity>.from((state as CartLoaded).items);
+      final index = items.indexWhere((e) => e.product.id == productId);
+      if (index >= 0 && items[index].quantity > 1) {
+        items[index] =
+            items[index].copyWith(quantity: items[index].quantity - 1);
+        emit(CartLoaded(items));
+        await cartRepository.decreaseQuantity(productId);
+      }
+    }
   }
 
-  double _calculateTotal(List<CartItemEntity> items) {
-    return items.fold(
-      0.0,
-      (total, e) => total + (e.product.price * e.quantity),
-    );
+  Future<void> removeProduct(String productId) async {
+    if (state is CartLoaded) {
+      final items = List<CartItemEntity>.from((state as CartLoaded).items)
+        ..removeWhere((e) => e.product.id == productId);
+      emit(CartLoaded(items));
+      await cartRepository.removeProduct(productId);
+    }
+  }
+
+  Future<void> increaseQuantity(String productId) async {
+    if (state is CartLoaded) {
+      final items = List<CartItemEntity>.from((state as CartLoaded).items);
+      final index = items.indexWhere((e) => e.product.id == productId);
+      if (index >= 0) {
+        items[index] =
+            items[index].copyWith(quantity: items[index].quantity + 1);
+        emit(CartLoaded(items));
+        await cartRepository.increaseQuantity(productId);
+      }
+    }
   }
 }

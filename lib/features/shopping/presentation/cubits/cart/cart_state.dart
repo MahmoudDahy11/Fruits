@@ -1,24 +1,20 @@
-part of 'cart_cubit.dart';
+import '../../../domain/entity/cart_entity.dart';
 
-class CartState extends Equatable {
+abstract class CartState {}
+
+class CartInitial extends CartState {}
+
+class CartLoading extends CartState {}
+
+class CartLoaded extends CartState {
   final List<CartItemEntity> items;
   final double total;
 
-  const CartState({
-    this.items = const [],
-    this.total = 0.0,
-  });
+  CartLoaded(this.items)
+      : total = items.fold(0.0, (sum, item) => sum + item.totalPrice);
+}
 
-  CartState copyWith({
-    List<CartItemEntity>? items,
-    double? total,
-  }) {
-    return CartState(
-      items: items ?? this.items,
-      total: total ?? this.total,
-    );
-  }
-
-  @override
-  List<Object?> get props => [items, total];
+class CartError extends CartState {
+  final String message;
+  CartError(this.message);
 }

@@ -21,21 +21,19 @@ class FavoriteCubit extends Cubit<FavoriteState> {
 
   Future<void> toggleFavorite(ProductEntity product, bool isFav) async {
     try {
-      if (state is FavoriteUpdated) {
-        final currentFavorites = List<ProductEntity>.from(
-          (state as FavoriteUpdated).favorites,
-        );
+      final currentFavorites = state is FavoriteUpdated
+          ? List<ProductEntity>.from((state as FavoriteUpdated).favorites)
+          : <ProductEntity>[];
 
-        if (isFav) {
-          await repository.removeFromFavorite(product.id);
-          currentFavorites.removeWhere((p) => p.id == product.id);
-        } else {
-          await repository.addToFavorite(product);
-          currentFavorites.add(product);
-        }
-
-        emit(FavoriteUpdated(favorites: currentFavorites));
+      if (isFav) {
+        await repository.removeFromFavorite(product.id);
+        currentFavorites.removeWhere((p) => p.id == product.id);
+      } else {
+        await repository.addToFavorite(product);
+        currentFavorites.add(product);
       }
+
+      emit(FavoriteUpdated(favorites: currentFavorites));
     } catch (e) {
       emit(FavoriteError(e.toString()));
     }
