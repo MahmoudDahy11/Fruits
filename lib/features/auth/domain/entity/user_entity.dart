@@ -1,5 +1,8 @@
-
-// Entity representing a user in the authentication domain
+/*
+ * UserEntity class
+ * represents a user with name, email, and unique identifier (uId)
+ * used in the authentication domain of the application
+ */
 class UserEntity {
   final String name;
   final String email;

@@ -17,8 +17,6 @@ class FirebaseAuthRepoImplement extends FirebaseAuthRepo {
 
   FirebaseAuthRepoImplement(this._firebaseService);
 
-
- 
   @override
   Future<Either<CustomFailure, UserEntity>> createUserWithEmailAndPassword({
     required String email,
