@@ -1,7 +1,17 @@
 import 'package:e_commerce_app/core/constant/assets.dart';
+import 'package:e_commerce_app/core/services/local_storage_service.dart';
 import 'package:e_commerce_app/features/on_boarding/presentation/page_view.dart';
+import 'package:e_commerce_app/features/shopping/presentation/views/home_view_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+/*
+ * Splash class
+ * StatefulWidget that represents the splash screen
+ * Displays an animated logo and navigates to the appropriate screen based on login status
+ * Uses LocalStorageService to check if the user is logged in
+ * Implements a fade-in animation for the logo
+ */
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -18,6 +28,8 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
 
+    LocalStorageService.init();
+
     Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
         _opacity = 1.0;
@@ -25,7 +37,12 @@ class _SplashState extends State<Splash> {
     });
 
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacementNamed(OnBoarding.id);
+      bool loggedIn = LocalStorageService.isLoggedIn();
+      if (loggedIn) {
+        Navigator.of(context).pushReplacementNamed(HomeViewProduct.id);
+      } else {
+        Navigator.of(context).pushReplacementNamed(OnBoarding.id);
+      }
     });
   }
 
