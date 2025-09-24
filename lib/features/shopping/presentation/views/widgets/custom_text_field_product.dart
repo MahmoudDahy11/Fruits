@@ -24,7 +24,7 @@ class CustomTextFieldProduct extends StatelessWidget {
         ],
       ),
       child: TextFormField(
-        onChanged: onChanged, // السيرش يشتغل هنا
+        onChanged: onChanged,
         decoration: InputDecoration(
           hintText: 'ابحث عن ...',
           prefixIcon: Icon(
