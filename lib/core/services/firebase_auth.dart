@@ -5,11 +5,16 @@ import 'package:e_commerce_app/core/errors/custom_excption.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:e_commerce_app/core/services/local_storage_service.dart';
+
 
 /*
  * FirebaseService class
- * handles Firebase Authentication and Firestore operations
- * includes methods for email/password, Google, and Facebook authentication
+ * handles user authentication with Firebase
+ * supports email/password, Google, and Facebook sign-in methods
+ * manages user data in Firestore
+ * saves user session data locally using LocalStorageService
+ * throws CustomException on errors with appropriate messages
  */
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -34,6 +39,13 @@ class FirebaseService {
       log("✅ User created: ${user.email}");
       await user.sendEmailVerification();
       log("📩 Verification email sent to: ${user.email}");
+
+      await LocalStorageService.saveUserData(
+        uid: user.uid,
+        email: user.email!,
+        name: name,
+      );
+
       return user;
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
@@ -83,12 +95,19 @@ class FirebaseService {
           errMessage: 'Please verify your email before logging in.',
         );
       }
+
       await firestore.collection('users').doc(user.uid).set({
         'uid': user.uid,
         'email': user.email,
         'name': user.displayName ?? '',
         'createdAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
+
+      await LocalStorageService.saveUserData(
+        uid: user.uid,
+        email: user.email!,
+        name: user.displayName,
+      );
 
       return user;
     } on FirebaseAuthException catch (e) {
@@ -117,7 +136,8 @@ class FirebaseService {
     try {
       await _auth.signOut();
       await GoogleSignIn().signOut();
-      // await FacebookAuth.instance.logOut();
+
+      await LocalStorageService.clearUserData();
     } catch (e) {
       throw CustomException(errMessage: 'Sign out failed: ${e.toString()}');
     }
@@ -158,6 +178,13 @@ class FirebaseService {
         'createdAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
 
+      await LocalStorageService.saveUserData(
+        uid: user.uid,
+        email: user.email!,
+        name: user.displayName,
+        photoUrl: user.photoURL,
+      );
+
       return user;
     } on FirebaseAuthException catch (e) {
       throw CustomException(
@@ -180,7 +207,18 @@ class FirebaseService {
           accessToken.tokenString,
         );
 
-        return await FirebaseAuth.instance.signInWithCredential(credential);
+        final UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithCredential(credential);
+
+        final user = userCredential.user!;
+        await LocalStorageService.saveUserData(
+          uid: user.uid,
+          email: user.email!,
+          name: user.displayName,
+          photoUrl: user.photoURL,
+        );
+
+        return userCredential;
       } else if (result.status == LoginStatus.cancelled) {
         throw CustomException(errMessage: 'Facebook sign-in was cancelled.');
       } else {

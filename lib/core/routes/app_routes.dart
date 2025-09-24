@@ -24,12 +24,13 @@ import '../../features/shopping/presentation/cubits/get_product/get_product_cubi
 import '../../features/shopping/presentation/views/fav_view.dart';
 import '../../features/shopping/presentation/views/product_details_view.dart';
 
+
 /*
  * AppRoutes class
- * defines application routes
- * maps route names to corresponding widget builders
+ * defines the routes for the application
+ * uses BlocProvider and MultiBlocProvider to inject dependencies into views
+ * routes are mapped to their respective WidgetBuilder functions
  */
-
 class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
     Splash.id: (context) => const Splash(),
@@ -61,7 +62,6 @@ class AppRoutes {
     ProductDetiallsView.id: (context) {
       final product =
           ModalRoute.of(context)!.settings.arguments as ProductEntity;
-
       return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => getIt<AddProductCubit>()),

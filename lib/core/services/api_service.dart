@@ -1,3 +1,4 @@
+// core/services/api_service.dart
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app/core/errors/custom_excption.dart';
 import 'package:e_commerce_app/core/errors/failure.dart';
@@ -5,22 +6,17 @@ import 'package:flutter/material.dart';
 
 /*
  * ApiService class
- * handles HTTP requests using Dio package
- * includes methods for GET, POST, PUT, PATCH, DELETE
+ * provides methods for making HTTP requests (GET, POST, PUT, PATCH, DELETE)
+ * uses Dio package for network operations
+ * handles authorization headers if a token is provided
+ * throws CustomException on errors with appropriate messages
  */
 class ApiService {
   final Dio _dio;
   ApiService(this._dio);
 
-  final String _baseUrl = 'https://fakestoreapi.com/';
+  final String _baseUrl = 'https://fruitapi-nu.vercel.app/api/';
 
-  /*
-* get method
-* makes a GET request to the specified endpoint
-* includes optional authorization token in headers
-* handles Dio exceptions and throws CustomException on error
-* returns response data on success
-*/
   Future<dynamic> get({
     required String endPoint,
     @required String? token,
@@ -45,13 +41,6 @@ class ApiService {
     }
   }
 
-  /*
-* post method
-* makes a POST request to the specified endpoint with optional body data
-* includes optional authorization token in headers
-* handles Dio exceptions and throws CustomException on error
-* returns response data on success
-*/
   Future<dynamic> post({
     required String endPoint,
     @required String? token,
@@ -76,13 +65,6 @@ class ApiService {
     }
   }
 
-  /*
-* put method
-* makes a PUT request to the specified endpoint with optional body data
-* includes optional authorization token in headers
-* handles Dio exceptions and throws CustomException on error
-* returns response data on success
- */
   Future<dynamic> put({
     required String endPoint,
     @required String? token,
@@ -107,13 +89,6 @@ class ApiService {
     }
   }
 
-  /* 
-*patch method
-* makes a PATCH request to the specified endpoint with optional body data
-* includes optional authorization token in headers
-* handles Dio exceptions and throws CustomException on error
-* returns response data on success
-*/
   Future<dynamic> patch({
     required String endPoint,
     @required String? token,
@@ -138,13 +113,6 @@ class ApiService {
     }
   }
 
-  /* 
-*delete method
-* makes a DELETE request to the specified endpoint with optional body data
-* includes optional authorization token in headers
-* handles Dio exceptions and throws CustomException on error
-* returns response data on success
-*/
   Future<dynamic> delete({
     required String endPoint,
     @required String? token,

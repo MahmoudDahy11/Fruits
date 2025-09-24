@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
  */
 class CustomFailure {
   final String errMessage;
-
   CustomFailure({required this.errMessage});
 }
 
