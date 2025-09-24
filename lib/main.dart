@@ -6,16 +6,21 @@ import 'package:e_commerce_app/generated/l10n.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'core/services/local_storage_service.dart';
 import 'features/splash/presentation/views/splash.dart';
 
 /*
  * main function
  * initializes Firebase and GetIt
  * runs the Fruits app
+ * ensures widgets are bound before initialization
+ * awaits Firebase initialization with platform-specific options
+ * initializes local storage service
  */
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await LocalStorageService.init();
   getItSetup();
   runApp(const Fruits());
 }
@@ -50,5 +55,5 @@ class Fruits extends StatelessWidget {
   }
 }
 
-//dahym2028@gmail.com          Asd00968
-//iphone8009688@gmail.com       Asd00968
+//dahym2028@gmail.com          
+//iphone8009688@gmail.com       
