@@ -4,21 +4,18 @@ import 'package:e_commerce_app/features/shopping/presentation/views/widgets/shop
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FavoriteView extends StatefulWidget {
+
+/*
+ * FavoriteView class
+ * StatelessWidget that represents the favorite products screen
+ * Uses BlocBuilder to manage and display the state of favorite products
+ * Displays a grid of favorite product cards
+ * Handles loading, empty, and error states for favorites
+ */
+
+class FavoriteView extends StatelessWidget {
   const FavoriteView({super.key});
   static const id = "FavoriteView";
-
-  @override
-  State<FavoriteView> createState() => _FavoriteViewState();
-}
-
-class _FavoriteViewState extends State<FavoriteView> {
-
-  @override
-void initState() {
-  super.initState();
-  context.read<FavoriteCubit>().loadFavorites();
-}
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +29,9 @@ void initState() {
       ),
       body: BlocBuilder<FavoriteCubit, FavoriteState>(
         builder: (context, state) {
-          if (state is FavoriteUpdated && state.favorites.isNotEmpty) {
+          if (state is FavoriteLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is FavoriteUpdated && state.favorites.isNotEmpty) {
             return GridView.builder(
               padding: const EdgeInsets.all(12),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -46,6 +45,8 @@ void initState() {
                 return ShoppingCard(product: state.favorites[index]);
               },
             );
+          } else if (state is FavoriteError) {
+            return Center(child: Text("Error: ${state.message}"));
           } else {
             return const Center(
               child: Text(

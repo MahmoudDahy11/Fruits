@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/core/helper/show_snak_bar.dart';
 import 'package:e_commerce_app/features/shopping/domain/entity/product_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,15 @@ import 'widgets/custom_details_cart.dart';
 import 'widgets/custom_review.dart';
 import 'widgets/custom_text_salary.dart';
 import 'widgets/product_image_cart.dart';
+
+
+/*
+ * ProductDetiallsView class
+ * StatefulWidget that represents the product details screen
+ * Displays product information including image, category, price, rating, and description
+ * Includes an "Add to Cart" button that adds the product to the cart using CartCubit
+ * Shows a snackbar notification when the product is added to the cart
+ */
 
 class ProductDetiallsView extends StatefulWidget {
   const ProductDetiallsView({super.key, required this.product});
@@ -34,7 +44,7 @@ class _ProductDetiallsViewState extends State<ProductDetiallsView> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
                       widget.product.category,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'Cairo',
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
@@ -42,7 +52,7 @@ class _ProductDetiallsViewState extends State<ProductDetiallsView> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: CustomTextSalary(
                       salary: widget.product.price.toString(),
                     ),
@@ -61,7 +71,7 @@ class _ProductDetiallsViewState extends State<ProductDetiallsView> {
                     ),
                     child: Text(
                       widget.product.description,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'Cairo',
                         color: Colors.grey,
                         fontSize: 16,
@@ -71,7 +81,7 @@ class _ProductDetiallsViewState extends State<ProductDetiallsView> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CustonDetailsCart(),
+                    child: CustonDetailsCart(product: widget.product),
                   ),
                 ],
               ),
@@ -83,7 +93,8 @@ class _ProductDetiallsViewState extends State<ProductDetiallsView> {
             child: CustomButton(
               text: 'أضف الي السلة',
               onTap: () {
-                BlocProvider.of<CartCubit>(context).addProduct(widget.product);
+                context.read<CartCubit>().addProduct(widget.product);
+                showSnakBar(context, "تمت إضافته للسلة");
               },
             ),
           ),

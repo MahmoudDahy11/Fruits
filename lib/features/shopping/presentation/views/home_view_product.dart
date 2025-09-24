@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_commerce_app/core/constant/assets.dart';
 import 'package:e_commerce_app/features/shopping/presentation/views/account_view.dart';
 import 'package:flutter/material.dart';
@@ -5,17 +7,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
+import '../cubits/cart/cart_state.dart';
 import '../cubits/fav/favorite_cubit.dart';
 import 'fav_view.dart';
 import 'product_view.dart';
 import '../cubits/get_product/get_product_cubit.dart';
 import '../cubits/cart/cart_cubit.dart';
 import 'cart_view.dart';
-import 'widgets/card_item.dart';
 import 'widgets/custom_list_tile_info.dart';
 import 'widgets/custom_text_field_product.dart';
 import 'widgets/shopping_card.dart';
 
+
+/*
+ * HomeViewProduct class
+ * StatefulWidget that represents the main home view with product listings
+ * Contains a bottom navigation bar to switch between different views 
+ * Uses BlocBuilder to manage state for products, favorites, and cart
+ * Implements product filtering based on user input in the search field
+ * Displays product cards in a grid layout
+ */
 class HomeViewProduct extends StatefulWidget {
   const HomeViewProduct({super.key});
   static String id = 'Home_product_view';
@@ -72,23 +83,6 @@ class _HomeViewProductState extends State<HomeViewProduct> {
                 child: CustomTextFieldProduct(onChanged: _filterProducts),
               ),
             ),
-            // const SliverToBoxAdapter(child: SizedBox(height: 30)),
-            // SliverToBoxAdapter(
-            //   child: SizedBox(
-            //     height: MediaQuery.of(context).size.height * .22,
-            //     child: ListView.builder(
-            //       physics: const BouncingScrollPhysics(),
-            //       scrollDirection: Axis.horizontal,
-            //       itemCount: 10,
-            //       itemBuilder: (context, index) {
-            //         return const Padding(
-            //           padding: EdgeInsets.symmetric(horizontal: 16.0),
-            //           child: CardItem(),
-            //         );
-            //       },
-            //     ),
-            //   ),
-            // ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -126,6 +120,7 @@ class _HomeViewProductState extends State<HomeViewProduct> {
                     child: Center(child: CircularProgressIndicator()),
                   );
                 } else if (state is GetProductFailure) {
+                  log(state.errMessage);
                   return SliverToBoxAdapter(
                     child: Center(child: Text(state.errMessage)),
                   );
@@ -229,15 +224,18 @@ class _HomeViewProductState extends State<HomeViewProduct> {
               title: const Text("المفضلة"),
               selectedColor: const Color(0xff1B5E37),
             ),
-
             SalomonBottomBarItem(
               icon: BlocBuilder<CartCubit, CartState>(
                 builder: (context, state) {
+                  int cartCount = 0;
+                  if (state is CartLoaded) {
+                    cartCount = state.items.length;
+                  }
                   return Stack(
                     clipBehavior: Clip.none,
                     children: [
                       SvgPicture.asset(Assets.imagesShoppingCart, height: 30),
-                      if (state.items.isNotEmpty)
+                      if (cartCount > 0)
                         Positioned(
                           right: -6,
                           top: -6,
@@ -248,7 +246,7 @@ class _HomeViewProductState extends State<HomeViewProduct> {
                               shape: BoxShape.circle,
                             ),
                             child: Text(
-                              state.items.length.toString(),
+                              cartCount.toString(),
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,

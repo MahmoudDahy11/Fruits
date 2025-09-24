@@ -7,6 +7,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../core/constant/assets.dart';
 
+
+/*
+ * HomeViewProduct class
+ * StatefulWidget that represents the main home view with product listings
+ * Contains a bottom navigation bar to switch between different views
+ * Uses BlocBuilder to manage state for products, favorites, and cart
+ * Implements product filtering based on user input in the search field
+ * Displays product cards in a grid layout
+ */
+
 class ProductsView extends StatefulWidget {
   const ProductsView({super.key});
   static const String id = 'ProductsView';
@@ -22,7 +32,8 @@ class _ProductsViewState extends State<ProductsView> {
     if (searchQuery.isEmpty) return allProducts;
     return allProducts
         .where(
-          (product) => product.title.toLowerCase().startsWith(searchQuery.toLowerCase()),
+          (product) =>
+              product.title.toLowerCase().startsWith(searchQuery.toLowerCase()),
         )
         .toList();
   }
@@ -61,89 +72,94 @@ class _ProductsViewState extends State<ProductsView> {
             final allProducts = state.products;
             final filteredProducts = _filterProducts(allProducts);
 
-            return CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 8.0,
+                      ),
+                      child: CustomTextFieldProduct(
+                        onChanged: (value) {
+                          setState(() {
+                            searchQuery = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 150,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: allProducts.length,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: ListViweGenerate(
+                              product: allProducts[index],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 16,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            "الأكثر مبيعا",
+                            style: TextStyle(
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Spacer(),
+                          Text(
+                            "المزيد",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontFamily: 'Cairo',
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverPadding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 8.0,
-                    ),
-                    child: CustomTextFieldProduct(
-                      onChanged: (value) {
-                        setState(() {
-                          searchQuery = value;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 150,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: allProducts.length,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: ListViweGenerate(product: allProducts[index]),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
                       horizontal: 8.0,
                       vertical: 16,
                     ),
-                    child: Row(
-                      children: [
-                        Text(
-                          "الأكثر مبيعا",
-                          style: TextStyle(
-                            fontFamily: 'Cairo',
-                            fontWeight: FontWeight.w900,
-                            fontSize: 20,
+                    sliver: SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) =>
+                            ShoppingCard(product: filteredProducts[index]),
+                        childCount: filteredProducts.length,
+                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20,
+                            childAspectRatio: 0.7,
                           ),
-                        ),
-                        Spacer(),
-                        Text(
-                          "المزيد",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontFamily: 'Cairo',
-                            fontSize: 20,
-                          ),
-                        ),
-                      ],
                     ),
                   ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8.0,
-                    vertical: 16,
-                  ),
-                  sliver: SliverGrid(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) =>
-                          ShoppingCard(product: filteredProducts[index]),
-                      childCount: filteredProducts.length,
-                    ),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 20,
-                          mainAxisSpacing: 20,
-                          childAspectRatio: 0.7,
-                        ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             );
           } else {
             return const Center(child: Text("جاري تحميل المنتجات..."));

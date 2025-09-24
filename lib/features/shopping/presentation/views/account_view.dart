@@ -12,6 +12,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 
+/*
+ * AccountView class
+ * StatelessWidget that represents the user account screen
+ * Uses BlocConsumer to handle sign-out state changes
+ * Displays user information and options like account info and wallet
+ * Includes a sign-out button that triggers the sign-out process
+ */
+
 class AccountView extends StatelessWidget {
   const AccountView({super.key});
   static const String id = 'AccountView';
