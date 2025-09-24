@@ -3,6 +3,12 @@ import 'package:e_commerce_app/features/on_boarding/presentation/widgets/second_
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+
+/*
+ * OnBoarding class
+ * StatefulWidget that represents the onboarding screen
+ * Contains a PageView with two pages and a SmoothPageIndicator
+ */
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
   static const String id = "page_view";

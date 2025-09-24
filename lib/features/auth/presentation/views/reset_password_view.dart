@@ -3,6 +3,13 @@ import 'package:e_commerce_app/core/widgets/custom_botton.dart';
 import 'package:e_commerce_app/core/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
+
+/*
+ * ResetPasswordView class
+ * StatelessWidget that represents the reset password screen
+ * Contains a text field for phone number input and a confirmation button
+ * Uses GestureDetector to dismiss the keyboard when tapping outside the text field
+ */
 class ResetPasswordView extends StatelessWidget {
   const ResetPasswordView({super.key});
   static const String id = "Reset Password";

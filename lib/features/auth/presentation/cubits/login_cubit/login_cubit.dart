@@ -5,6 +5,14 @@ import 'package:meta/meta.dart';
 
 part 'login_state.dart';
 
+
+/*
+ * LoginCubit class
+ * extends Cubit with LoginState
+ * manages the state for email/password login
+ * uses FirebaseAuthRepo for authentication operations
+ * emits loading, success, and failure states based on the login process
+ */
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this._firebaseAuthrepo) : super(LoginInitial());
 

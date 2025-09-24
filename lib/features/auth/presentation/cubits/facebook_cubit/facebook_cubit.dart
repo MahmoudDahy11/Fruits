@@ -9,6 +9,14 @@ import '../../../domain/entity/user_entity.dart';
 
 part 'facebook_state.dart';
 
+
+/*
+ * FacebookCubit class
+ * extends Cubit with FacebookState
+ * manages the state for Facebook sign-in
+ * uses FirebaseAuthRepo for authentication operations
+ * emits loading, success, and failure states based on the sign-in process
+ */
 class FacebookCubit extends Cubit<FacebookState> {
   final FirebaseAuthRepo authRepo;
   FacebookCubit(this.authRepo) : super(FacebookInitial());

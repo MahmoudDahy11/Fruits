@@ -1,5 +1,11 @@
 part of 'signup_cubit.dart';
 
+
+/*
+ * SignupState class
+ * base state class for SignupCubit
+ * has subclasses for initial, loading, success, and failure states
+ */
 @immutable
 sealed class SignupState {}
 

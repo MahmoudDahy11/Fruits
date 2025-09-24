@@ -5,6 +5,14 @@ import 'package:meta/meta.dart';
 
 part 'signup_state.dart';
 
+
+/*
+ * SignupCubit class
+ * extends Cubit with SignupState
+ * manages the state for user sign-up
+ * uses FirebaseAuthRepo for authentication operations
+ * emits loading, success, and failure states based on the sign-up process
+ */
 class SignupCubit extends Cubit<SignupState> {
   SignupCubit(this._firebaseAuthrepo) : super(SignupInitial());
   final FirebaseAuthRepo _firebaseAuthrepo;

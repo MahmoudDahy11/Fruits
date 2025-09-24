@@ -1,5 +1,12 @@
 part of 'facebook_cubit.dart';
 
+
+/* 
+ * FacebookState class
+ * base state class for FacebookCubit
+ * uses Equatable for value comparison
+ * has subclasses for initial, loading, success, and failure states
+ */
 @immutable
 sealed class FacebookState extends Equatable {
   const FacebookState();

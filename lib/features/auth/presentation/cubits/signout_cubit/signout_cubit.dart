@@ -4,6 +4,14 @@ import 'package:meta/meta.dart';
 
 part 'signout_state.dart';
 
+
+/*
+ * SignoutCubit class
+ * extends Cubit with SignoutState
+ * manages the state for user sign-out
+ * uses FirebaseAuthRepo for authentication operations
+ * emits loading, success, and failure states based on the sign-out process
+ */
 class SignoutCubit extends Cubit<SignoutState> {
   SignoutCubit(this._firebaseAuthrepo) : super(SignOutInitial());
 

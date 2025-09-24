@@ -1,5 +1,11 @@
 part of 'signout_cubit.dart';
 
+
+/*
+ * SignoutState class
+ * base state class for SignoutCubit
+ * has subclasses for initial, loading, success, and failure states
+ */
 @immutable
 sealed class SignoutState {}
 
