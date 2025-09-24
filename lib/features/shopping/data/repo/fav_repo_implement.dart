@@ -15,7 +15,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
   }
 
   @override
-  Future<void> removeFromFavorite(int productId) async {
+  Future<void> removeFromFavorite(String productId) async {
     await service.removeFavorite(productId);
   }
 

@@ -53,11 +53,13 @@ class ProductRepoImplement implements ProductRepo {
   }) async {
     try {
       final data = await _apiService.get(endPoint: 'products', token: token);
-      List<ProductEntity> products = [];
-      for (var item in data as List) {
+
+      final List<dynamic> productsJson = data['data']?['data'] ?? [];
+
+      List<ProductEntity> products = productsJson.map((item) {
         final model = ProductModel.fromJson(item);
-        products.add(model.toEntity());
-      }
+        return model.toEntity();
+      }).toList();
 
       return Right(products);
     } on CustomFailure catch (failure) {
@@ -81,12 +83,12 @@ class ProductRepoImplement implements ProductRepo {
   }) async {
     try {
       final data = await _apiService.patch(
-        endPoint: endPoint,
-        token: 'products/%7Bid%7D',
+        endPoint: endPoint, 
+        token: token,
         body: body,
       );
 
-      final productModel = ProductModel.fromJson(data);
+      final productModel = ProductModel.fromJson(data['data']);
       final productEntity = productModel.toEntity();
 
       return Right(productEntity);
@@ -111,12 +113,14 @@ class ProductRepoImplement implements ProductRepo {
   }) async {
     try {
       final data = await _apiService.post(
-        endPoint: 'products',
+        endPoint: endPoint, 
         token: token,
         body: body,
       );
 
-      final productModel = ProductModel.fromJson(data);
+      final productJson = data['data']?['data'] ?? {};
+
+      final productModel = ProductModel.fromJson(productJson);
       final productEntity = productModel.toEntity();
 
       return Right(productEntity);
@@ -141,12 +145,16 @@ class ProductRepoImplement implements ProductRepo {
   }) async {
     try {
       final data = await _apiService.put(
-        endPoint: 'products/%7Bid%7D',
+        endPoint: endPoint, 
         token: token,
         body: body,
       );
-      final ProductModel productModel = ProductModel.fromJson(data);
-      final ProductEntity productEntity = productModel.toEntity();
+
+      final productJson = data['data']?['data'] ?? {};
+
+      final productModel = ProductModel.fromJson(productJson);
+      final productEntity = productModel.toEntity();
+
       return Right(productEntity);
     } on CustomFailure catch (failure) {
       return Left(failure);

@@ -1,62 +1,62 @@
+// features/shopping/data/service/cart_service.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entity/cart_entity.dart';
-import '../../domain/entity/product_entity.dart';
 import '../model/cart_model.dart';
 
 class CartFirestoreService {
-  CartFirestoreService._();
-  static final CartFirestoreService _instance = CartFirestoreService._();
-  factory CartFirestoreService() => _instance;
-
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String _collection = 'cart';
+  final CollectionReference _cartRef =
+  FirebaseFirestore.instance.collection('cart');
 
   Future<List<CartItemEntity>> getCart() async {
-    final snapshot = await _firestore.collection(_collection).get();
+    final snapshot = await _cartRef.get();
     final List<CartItemEntity> items = [];
     for (final doc in snapshot.docs) {
-      final data = doc.data();
-      final model = CartItemModel.fromJson(data);
-      items.add(model.toEntity());
+      final data = doc.data() as Map<String, dynamic>;
+      try {
+        final model = CartItemModel.fromJson(data);
+        items.add(model.toEntity());
+      } catch (_) {
+        // if JSON shape differs, try to parse using doc fields
+        final productJson = data['product'] as Map<String, dynamic>? ?? {};
+        final qty = (data['quantity'] ?? 1) as int;
+        final model = CartItemModel.fromJson({'product': productJson, 'quantity': qty});
+        items.add(model.toEntity());
+      }
     }
     return items;
   }
 
-  Future<void> addProduct(ProductEntity product) async {
-    final docId = product.id.toString();
-    final docRef = _firestore.collection(_collection).doc(docId);
+  Future<void> addProduct(CartItemEntity item) async {
+    await _cartRef.doc(item.product.id).set(item.toJson());
+  }
 
-    final doc = await docRef.get();
+  Future<void> removeProduct(String productId) async {
+    await _cartRef.doc(productId).delete();
+  }
+
+  Future<void> increaseQuantity(String productId) async {
+    final doc = await _cartRef.doc(productId).get();
     if (doc.exists) {
-      final current = doc.data()!;
-      final currentQty = (current['quantity'] ?? 1) as int;
-      await docRef.update({'quantity': currentQty + 1});
-    } else {
-      final cartModel = CartItemModel.fromEntity(
-        CartItemEntity(product: product, quantity: 1),
-      );
-      await docRef.set(cartModel.toJson());
+      final data = doc.data() as Map<String, dynamic>;
+      final current = (data['quantity'] ?? 1) as int;
+      await _cartRef.doc(productId).update({'quantity': current + 1});
     }
   }
 
-  Future<void> removeProduct(int productId) async {
-    final docId = productId.toString();
-    await _firestore.collection(_collection).doc(docId).delete();
-  }
-
-  Future<void> updateQuantity(int productId, int quantity) async {
-    final docId = productId.toString();
-    final docRef = _firestore.collection(_collection).doc(docId);
-    if (quantity <= 0) {
-      await docRef.delete();
-    } else {
-      await docRef.update({'quantity': quantity});
+  Future<void> decreaseQuantity(String productId) async {
+    final doc = await _cartRef.doc(productId).get();
+    if (doc.exists) {
+      final data = doc.data() as Map<String, dynamic>;
+      final current = (data['quantity'] ?? 1) as int;
+      if (current > 1) {
+        await _cartRef.doc(productId).update({'quantity': current - 1});
+      }
     }
   }
 
   Future<void> clearCart() async {
-    final snapshot = await _firestore.collection(_collection).get();
-    final batch = _firestore.batch();
+    final snapshot = await _cartRef.get();
+    final batch = FirebaseFirestore.instance.batch();
     for (final doc in snapshot.docs) {
       batch.delete(doc.reference);
     }
